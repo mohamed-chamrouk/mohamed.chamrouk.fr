@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html class="h-feed">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>
+    mohamed.chamrouk.fr
+  </title>
+
+  <link rel="stylesheet" href="/static/css/terminal.css" />
+  <link rel="stylesheet" type="text/css" href="static/css/style_soup.css">
+  <link rel="stylesheet" type="text/css" href="static/css/switch.css">
+  {% block stylesheets %}{% endblock %}
+  <script type="text/javascript">
+  const htmlEl = document.getElementsByTagName('html')[0];
+
+  const toggleTheme = (theme) => {
+    htmlEl.dataset.theme = theme;
+  }
+
+  if (sessionStorage.getItem("theme")) {
+    // Restauration du contenu du champ
+    toggleTheme(sessionStorage.getItem("theme"));
+  }
+
+  function changeTheme() {
+    var checkbox = document.getElementById("darkSwitch");
+
+    if (checkbox.checked == true){
+      toggleTheme('light');
+      sessionStorage.setItem('theme', 'light');
+    } else {
+      toggleTheme('dark');
+      sessionStorage.setItem('theme', 'dark');
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="wrapper">
+
+
+    <header class="box header">
+      <div class="terminal-nav">
+        <div class="terminal-logo">
+          <div class="logo">
+            <a class="p-name u-url" href="/" class="no-style">
+              Mohamed
+              Chamrouk.
+            </a>
+          </div>
+        </div>
+        <nav class="terminal-menu">
+          <ul>
+            <li><a class="menu-item" href="/portfolio">Portfolio</a></li>
+            <li><a class="menu-item" href="/static/media/CV-Chamrouk-Mohamed.pdf">CV</a></li>
+            <li>
+              <label class="switch">
+                <input type="checkbox" id="darkSwitch" class="checkbox" onclick="changeTheme()">
+                <span class="toggle-thumb">
+
+                  <img width="20" height="20" id="img_switch" src="static/media/sun.svg"/>
+                  <img width="20" height="20" id="img_switch" src="static/media/moon.svg"/>
+
+                </span>
+              </label>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+
+    {% block content %}{% endblock %}
+
+
+
+    <aside class="box sidebar">
+      <div class="h-card">
+        <img class="u-photo u-logo" src="/static/media/profile_pic.png">
+        <h3>
+          <a class="p-name u-url" rel="me" href="/">
+            Mohamed Chamrouk
+          </a>
+        </h3>
+        <p class="p-note">
+          Bienvenu sur mon site !</p>
+          <p class="p-note">
+            Je suis un jeune étudiant en cursus d'Ingénieur dans les réseaux et télécoms.
+            J'ai une passion pour l'informatique depuis tout jeune que je cultive avec quelques projets et une soif constante
+            des avancées du milieu. Je me suis récemment trouvé une passion pour le réseaux, domaine dans lequel j'aimerais faire carrière.
+
+          </p>
+        </div>
+        <div>
+          <h3>CONTACTS:</h3>
+          <link rel="pgpkey" href="key.pub">
+          <nav>
+            <ul>
+              <li>
+                <a href="mailto:mohamed.chamrouk@telecom-sudparis.eu" rel="me">
+                  Email
+                </a>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/mohamed-chamrouk" rel="me">
+                  Linkedin
+                </a>
+              </li>
+              <li>
+                <a href="tel:+33681780376" rel="me">
+                  Téléphone
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+
+
+
+      <footer class="box footer">
+        <p>&raquo; <a href="/">Sources</a></p>
+      </footer>
+
+    </div>
+  </body>
+  <script type="text/javascript">
+  if (sessionStorage.getItem("theme")) {
+    if(sessionStorage.getItem("theme") == 'light') {
+      var checkbox = document.getElementById("darkSwitch");
+      checkbox.setAttribute("checked", "true");
+    }
+  }
+  </script>
+  </html>
