@@ -19,9 +19,16 @@
     htmlEl.dataset.theme = theme;
   }
 
-  if (sessionStorage.getItem("theme")) {
-    // Restauration du contenu du champ
-    toggleTheme(sessionStorage.getItem("theme"));
+  if (document.cookie.split(';').some(function(item) {
+    return item.trim().indexOf('theme=') == 0
+  })) {
+    if (document.cookie.split(';').some(function(item) {
+      return item.indexOf('theme=light') >= 0
+    })) {
+      toggleTheme('light');
+    } else {
+      toggleTheme('dark');
+    }
   }
 
   function changeTheme() {
@@ -29,10 +36,10 @@
 
     if (checkbox.checked == true){
       toggleTheme('light');
-      sessionStorage.setItem('theme', 'light');
+      document.cookie = "theme=light";
     } else {
       toggleTheme('dark');
-      sessionStorage.setItem('theme', 'dark');
+      document.cookie = "theme=dark";
     }
   }
   </script>
@@ -158,8 +165,12 @@
     </div>
   </body>
   <script type="text/javascript">
-  if (sessionStorage.getItem("theme")) {
-    if(sessionStorage.getItem("theme") == 'light') {
+  if (document.cookie.split(';').some(function(item) {
+    return item.trim().indexOf('theme=') == 0
+  })) {
+    if (document.cookie.split(';').some(function(item) {
+      return item.indexOf('theme=light') >= 0
+    })) {
       var checkbox = document.getElementById("darkSwitch");
       checkbox.setAttribute("checked", "true");
     }
