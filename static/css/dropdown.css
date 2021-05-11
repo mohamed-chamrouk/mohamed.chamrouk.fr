@@ -1,0 +1,66 @@
+.form-control {
+	box-shadow: none;
+	font-weight: normal;
+	font-size: 13px;
+  padding-left: 16px;
+}
+.navbar {
+	background: #fff;
+	padding-left: 30px;
+	padding-right: 16px;
+	border-bottom: 1px solid #dfe3e8;
+	border-radius: 0;
+}
+.navbar .from-group {
+  padding-left: 16px;
+}
+.navbar a {
+	color: #888;
+	font-size: 15px;
+}
+.navbar .dropdown-menu {
+	color: #999;
+	font-weight: normal;
+  padding-left: 16px;
+	border-radius: 1px;
+	border-color: #e5e5e5;
+	box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.navbar a, .navbar a:active {
+	color: #888;
+	padding: 8px 20px;
+	background: transparent;
+	line-height: normal;
+}
+.navbar .action-form {
+	width: 280px;
+	padding: 20px;
+	right: 0;
+	font-size: 14px;
+}
+.navbar .action-form a {
+	color: #33cabb;
+	padding: 0 !important;
+	font-size: 14px;
+}
+.navbar .action-form .hint-text {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+.navbar .btn-primary, .navbar .btn-primary:active {
+	color: #fff;
+	background: #33cabb !important;
+	border: none;
+}
+.navbar .btn-primary:hover, .navbar .btn-primary:focus {
+	color: #fff;
+	background: #31bfb1 !important;
+}
+.navbar .action-buttons .dropdown-toggle::after {
+	display: none;
+}
+.form-check-label input {
+	position: relative;
+	top: 1px;
+}
