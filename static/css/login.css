@@ -25,3 +25,8 @@ fieldset {
   padding-top: 10px;
   display: inline-block;
 }
+
+.notification.is-danger {
+  padding: 10px;
+  background: var(--secondary-color);
+}
