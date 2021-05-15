@@ -1,38 +1,66 @@
-.dropbtn {
-  color: var(--primary-color);
-  padding: 8px;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
+.form-control {
+	box-shadow: none;
+	font-weight: normal;
+	font-size: 13px;
+  padding-left: 16px;
 }
-
-.dropbtn:hover, .dropbtn:focus input[value^="Log in"]{
-  background-color: var(--primary-color);
-	color: white;
+.navbar {
+	background: #fff;
+	padding-left: 30px;
+	padding-right: 16px;
+	border-bottom: 1px solid #dfe3e8;
+	border-radius: 0;
 }
-
-.dropdown {
-  position: relative;
-  display: inline-block;
+.navbar .from-group {
+  padding-left: 16px;
 }
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: var(--invert-font-color);
-  min-width: 160px;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+.navbar a {
+	color: #888;
+	font-size: 15px;
 }
-
-.dropdown-content a {
-  color: var(--font-color);
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
+.navbar .dropdown-menu {
+	color: #999;
+	font-weight: normal;
+  padding-left: 16px;
+	border-radius: 1px;
+	border-color: #e5e5e5;
+	box-shadow: 0 2px 8px rgba(0,0,0,.05);
 }
-
-.dropdown a:hover {background-color: var(--primary-color);}
-
-.show {display: block;}
+.navbar a, .navbar a:active {
+	color: #888;
+	padding: 8px 20px;
+	background: transparent;
+	line-height: normal;
+}
+.navbar .action-form {
+	width: 280px;
+	padding: 20px;
+	right: 0;
+	font-size: 14px;
+}
+.navbar .action-form a {
+	color: #33cabb;
+	padding: 0 !important;
+	font-size: 14px;
+}
+.navbar .action-form .hint-text {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 13px;
+}
+.navbar .btn-primary, .navbar .btn-primary:active {
+	color: #fff;
+	background: #33cabb !important;
+	border: none;
+}
+.navbar .btn-primary:hover, .navbar .btn-primary:focus {
+	color: #fff;
+	background: #31bfb1 !important;
+}
+.navbar .action-buttons .dropdown-toggle::after {
+	display: none;
+}
+.form-check-label input {
+	position: relative;
+	top: 1px;
+}
