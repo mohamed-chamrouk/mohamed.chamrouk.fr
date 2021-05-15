@@ -415,7 +415,7 @@ table tbody td:first-child{
 	width:100%
 }
 fieldset{
-	/*border:1px solid var(--font-color);*/
+	border:1px solid var(--font-color);
 	padding:1em
 }
 label{
