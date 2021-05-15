@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="h-feed">
 <head>
-  <link rel="icon" href"static/media/favicon.ico">
+  <link rel="icon" href"/static/media/favicon.ico">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,10 +10,10 @@
   </title>
 
   <link rel="stylesheet" href="/static/css/terminal.css" />
-  <link rel="stylesheet" type="text/css" href="static/css/style_soup.css">
-  <link rel="stylesheet" type="text/css" href="static/css/switch.css">
-  <link rel="stylesheet" type="text/css" href="static/css/dropdown.css">
-  <link rel="stylesheet" type="text/css" href="static/css/login.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style_soup.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/switch.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/dropdown.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/login.css">
 
   <script src="http://code.jquery.com/jquery-3.6.0.js"></script>
 
@@ -58,6 +58,7 @@
 
 
     <header class="box header">
+      {% block header %}{% endblock %}
       <div class="terminal-nav">
         <div class="terminal-logo">
           <div class="logo">
@@ -101,8 +102,8 @@
                   <input type="checkbox" id="darkSwitch" class="checkbox" onclick="changeTheme()">
                   <span class="toggle-thumb">
 
-                    <img width="20" height="20" id="img_switch" src="static/media/sun.svg"/>
-                    <img width="20" height="20" id="img_switch" src="static/media/moon.svg"/>
+                    <img width="20" height="20" id="img_switch" src="/static/media/sun.svg"/>
+                    <img width="20" height="20" id="img_switch" src="/static/media/moon.svg"/>
 
                   </span>
                 </label>
