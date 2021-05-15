@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html class="h-feed">
 <head>
+  <link rel="icon" href"static/media/favicon.ico">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,15 +9,13 @@
     mohamed.chamrouk.fr
   </title>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
-
   <link rel="stylesheet" href="/static/css/terminal.css" />
   <link rel="stylesheet" type="text/css" href="static/css/style_soup.css">
   <link rel="stylesheet" type="text/css" href="static/css/switch.css">
   <link rel="stylesheet" type="text/css" href="static/css/dropdown.css">
+  <link rel="stylesheet" type="text/css" href="static/css/login.css">
+
+  <script src="http://code.jquery.com/jquery-3.6.0.js"></script>
 
   {% block stylesheets %}{% endblock %}
   <script type="text/javascript">
@@ -71,143 +70,152 @@
         <nav class="terminal-menu">
           <ul>
             <li>
-              <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                <div class="navbar-nav ml-auto action-buttons">
-                  <div class="nav-item dropdown">
-                    <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle mr-4">Login</a>
-                    <div class="dropdown-menu action-form">
-                      <form action="/examples/actions/confirmation.php" method="post">
-                        <div class="form-group">
-                          <input type="text" class="form-control" placeholder="Username" required="required">
-                        </div>
-                        <div class="form-group">
-                          <input type="password" class="form-control" placeholder="Password" required="required">
-                        </div>
-                        <input type="submit" class="btn btn-primary btn-block" value="Login">
-                        <div class="text-center mt-2">
-                          <a href="#">Forgot Your password?</a>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
+              <div class="dropdown">
+                <a onclick="myLoginFunction()" class="dropbtn" id="login-list" >Login</a>
+                <div id="myLoginDropdown" class="dropdown-content">
+                  <form>
+                    <fieldset id="inputs">
+                      <div class="padding-class"><input id="username" type="text" name="Email" placeholder="Username" required></div>
+                      <input id="password" type="password" name="Password" placeholder="Password" required>
+                      <div class="padding-button"><input type="submit" class="dropbtn" id="submit" value="Log in"></div>
+                    </fieldset>
+                  </form>
                 </div>
-              </nav>
-            </li>
-            <li><a class="menu-item" href="/portfolio">Portfolio</a></li>
-            <li><a class="menu-item" href="/static/media/CV-Chamrouk-Mohamed.pdf">CV</a></li>
-            <li>
-              <label class="switch">
-                <input type="checkbox" id="darkSwitch" class="checkbox" onclick="changeTheme()">
-                <span class="toggle-thumb">
-
-                  <img width="20" height="20" id="img_switch" src="static/media/sun.svg"/>
-                  <img width="20" height="20" id="img_switch" src="static/media/moon.svg"/>
-
-                </span>
-              </label>
-            </li>
-
-          </ul>
-        </nav>
-      </div>
-    </header>
-
-
-    {% block content %}{% endblock %}
-
-
-
-    <aside class="box sidebar">
-      <div class="h-card">
-        <img class="u-photo u-logo" src="/static/media/profile_pic.png">
-        <h3>
-          <a class="p-name u-url" rel="me" href="/">
-            Mohamed Chamrouk
-          </a>
-        </h3>
-        <p class="p-note">
-          Bienvenu sur mon site !</p>
-          <p class="p-note">
-            Je suis un jeune étudiant en cursus d'Ingénieur dans les réseaux et télécoms.
-            J'ai une passion pour l'informatique depuis tout jeune que je cultive avec quelques projets et une soif constante
-            des avancées du milieu. Je me suis récemment trouvé une passion pour le réseaux, domaine dans lequel j'aimerais faire carrière.
-
-          </p>
-        </div>
-        <div>
-          <h3>CONTACTS:</h3>
-          <link rel="pgpkey" href="key.pub">
-          <nav>
-            <ul>
-              <li>
-                <a href="mailto:mohamed.chamrouk@telecom-sudparis.eu" rel="me">
-                  Email
-                </a>
               </li>
+              <li><a class="menu-item" href="/portfolio">Portfolio</a></li>
+              <li><a class="menu-item" href="/static/media/CV-Chamrouk-Mohamed.pdf">CV</a></li>
               <li>
-                <a href="https://linkedin.com/in/mohamed-chamrouk" rel="me">
-                  Linkedin
-                </a>
-              </li>
-              <li>
-                <a href="tel:+33681780376" rel="me">
-                  Téléphone
-                </a>
+                <label class="switch">
+                  <input type="checkbox" id="darkSwitch" class="checkbox" onclick="changeTheme()">
+                  <span class="toggle-thumb">
+
+                    <img width="20" height="20" id="img_switch" src="static/media/sun.svg"/>
+                    <img width="20" height="20" id="img_switch" src="static/media/moon.svg"/>
+
+                  </span>
+                </label>
               </li>
             </ul>
           </nav>
         </div>
-      </aside>
+      </header>
+
+
+      {% block content %}{% endblock %}
 
 
 
-      <footer class="box footer">
-        <div class="dropdown">
-          <p>&raquo; <a onclick="myFunction()" class="dropbtn">Sources</a></p>
-          <div id="myDropdown" class="dropdown-content">
-            <a href="https://crowdersoup.com/">CrowderSoup</a>
-            <a href="https://github.com/mohamed-chamrouk/mohamed.chamrouk.fr">GitHub</a>
+      <aside class="box sidebar">
+        <div class="h-card">
+          <img class="u-photo u-logo" src="/static/media/profile_pic.png">
+          <h3>
+            <a class="p-name u-url" rel="me" href="/">
+              Mohamed Chamrouk
+            </a>
+          </h3>
+          <p class="p-note">
+            Bienvenu sur mon site !</p>
+            <p class="p-note">
+              Je suis un jeune étudiant en cursus d'Ingénieur dans les réseaux et télécoms.
+              J'ai une passion pour l'informatique depuis tout jeune que je cultive avec quelques projets et une soif constante
+              des avancées du milieu. Je me suis récemment trouvé une passion pour le réseaux, domaine dans lequel j'aimerais faire carrière.
+
+            </p>
           </div>
-        </div>
+          <div>
+            <h3>CONTACTS:</h3>
+            <link rel="pgpkey" href="key.pub">
+            <nav>
+              <ul>
+                <li>
+                  <a href="mailto:mohamed.chamrouk@telecom-sudparis.eu" rel="me">
+                    Email
+                  </a>
+                </li>
+                <li>
+                  <a href="https://linkedin.com/in/mohamed-chamrouk" rel="me">
+                    Linkedin
+                  </a>
+                </li>
+                <li>
+                  <a href="tel:+33681780376" rel="me">
+                    Téléphone
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </aside>
 
-        <script>
-        /* When the user clicks on the button,
-        toggle between hiding and showing the dropdown content */
-        function myFunction() {
-          document.getElementById("myDropdown").classList.toggle("show");
-        }
 
-        // Close the dropdown if the user clicks outside of it
-        window.onclick = function(event) {
-          if (!event.target.matches('.dropbtn')) {
-            var dropdowns = document.getElementsByClassName("dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-              var openDropdown = dropdowns[i];
-              if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-              }
-            }
+
+        <footer class="box footer">
+          <div class="dropdown">
+            <p>&raquo; <a onclick="myFunction()" class="dropbtn">Sources</a></p>
+            <div id="myDropdown" class="dropdown-content">
+              <a href="https://crowdersoup.com/">CrowderSoup</a>
+              <a href="https://github.com/mohamed-chamrouk/mohamed.chamrouk.fr">GitHub</a>
+            </div>
+          </div>
+
+          <script>
+          /* When the user clicks on the button,
+          toggle between hiding and showing the dropdown content */
+          function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
           }
+
+          function myLoginFunction() {
+            document.getElementById("myLoginDropdown").classList.toggle("show");
+          }
+
+          // Close the dropdown if the user clicks outside of it
+          /*window.onclick = function(event) {
+          if (!event.target.closest('.dropdown').length && ('.dropdown').isvi) {
+          var dropdowns = document.getElementsByClassName("dropdown-content");
+          var i;
+          for (i = 0; i < dropdowns.length; i++) {
+          var openDropdown = dropdowns[i];
+          if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
         }
-        </script>
-
-
-
-      </footer>
-
-    </div>
-  </body>
-  <script type="text/javascript">
-  if (document.cookie.split(';').some(function(item) {
-    return item.trim().indexOf('theme=') == 0
-  })) {
-    if (document.cookie.split(';').some(function(item) {
-      return item.indexOf('theme=light') >= 0
-    })) {
-      var checkbox = document.getElementById("darkSwitch");
-      checkbox.setAttribute("checked", "true");
+      }
     }
-  }
+  }*/
   </script>
-  </html>
+  <script>
+  $(document).click(function(event) {
+    var $target = $(event.target);
+    if(!$target.closest('.dropdown').length &&
+    $('.dropdown-content').is(":visible")) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      var i;
+      for (i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  });
+  </script>
+
+
+
+</footer>
+
+</div>
+</body>
+<script type="text/javascript">
+if (document.cookie.split(';').some(function(item) {
+  return item.trim().indexOf('theme=') == 0
+})) {
+  if (document.cookie.split(';').some(function(item) {
+    return item.indexOf('theme=light') >= 0
+  })) {
+    var checkbox = document.getElementById("darkSwitch");
+    checkbox.setAttribute("checked", "true");
+  }
+}
+</script>
+</html>
