@@ -53,17 +53,17 @@ body {
 ::-webkit-scrollbar {
   width: 12px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: #909090; 
+  background: #909090;
   border-radius: 10px;
   border: 3px solid var(--background-color);
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #606060; 
+  background: #606060;
 }
 
 .box {
@@ -116,41 +116,3 @@ figure {
 figure img {
   height: auto;
 }
-
-.dropbtn {
-  color: var(--primary-color);
-  padding: 8px;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
-}
-
-.dropbtn:hover, .dropbtn:focus {
-  background-color: var(--primary-color);
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: var(--font-color);
-  min-width: 160px;
-  overflow: auto;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: var(--invert-font-color);
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown a:hover {background-color: var(--primary-color);}
-
-.show {display: block;}
