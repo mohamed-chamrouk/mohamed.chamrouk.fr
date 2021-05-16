@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html class="h-feed">
+<head>
+  <link rel="icon" href"/static/media/favicon.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>
+    mohamed.chamrouk.fr
+  </title>
+
+  <link rel="stylesheet" href="/static/css/terminal.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/style_soup.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/switch.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/dropdown.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/login.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/snackbar.css">
+
+  <script src="http://code.jquery.com/jquery-3.6.0.js"></script>
+
+  {% block stylesheets %}{% endblock %}
+  <script type="text/javascript">
+  function snackFunction(id) {
+    // Get the snackbar DIV
+    var x = document.getElementById(id);
+
+    // Add the "show" class to DIV
+    x.className = "show";
+
+    // After 3 seconds, remove the show class from DIV
+    setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+  }
+
+  const htmlEl = document.getElementsByTagName('html')[0];
+
+  const toggleTheme = (theme) => {
+    htmlEl.dataset.theme = theme;
+  }
+
+  if (document.cookie.split(';').some(function(item) {
+    return item.trim().indexOf('theme=') == 0
+  })) {
+    if (document.cookie.split(';').some(function(item) {
+      return item.indexOf('theme=light') >= 0
+    })) {
+      toggleTheme('light');
+    } else {
+      toggleTheme('dark');
+    }
+  }
+
+  function changeTheme() {
+    var checkbox = document.getElementById("darkSwitch");
+
+    if (checkbox.checked == true){
+      toggleTheme('light');
+      document.cookie = "theme=light";
+    } else {
+      toggleTheme('dark');
+      document.cookie = "theme=dark";
+    }
+  }
+  $(document).on("click", ".action-buttons .dropdown-menu", function(e){
+    e.stopPropagation();
+  });
+  </script>
+</head>
+<body>
+  <div id="snackbar"> L'identification a réussi !</div>
+  <div id="snackbar-error"> L'identification a échoué !</div>
+  <div class="wrapper">
+
+
+    <header class="box header">
+      <div class="terminal-nav">
+        <div class="terminal-logo">
+          <div class="logo">
+            <a class="p-name u-url" href="/" class="no-style">
+              Mohamed
+              Chamrouk.
+            </a>
+          </div>
+        </div>
+        <nav class="terminal-menu">
+          <ul>
+            <li>
+              {% if current_user.is_authenticated %}
+              <a class="menu-item" href="/logout">Se déconnecter</a>
+              {% with messages = get_flashed_messages() %}
+              {% if "logged in" in messages %}
+              <script>snackFunction("snackbar")</script>
+              {% endif %}
+              {% endwith %}
+              {% else %}
+              <div class="dropdown">
+                <a onclick="myLoginFunction()" class="dropbtn" id="login-list" >S'identifier</a>
+                <div id="myLoginDropdown" class="dropdown-content">
+                  {% with messages = get_flashed_messages() %}
+                  {% if messages %}
+                  <script>
+                  snackFunction("snackbar-error");
+                  document.getElementById("myLoginDropdown").classList.toggle("show");
+                </script>
+                  <div class="notification is-danger">
+                    {{ messages[0] }}</a>.
+                  </div>
+                  {% endif %}
+                  {% endwith %}
+                  <form method="POST" action="/login">
+                    <fieldset id="inputs">
+                      <div class="padding-class"><input id="username" type="text" name="username" placeholder="Utilisateur" required></div>
+                      <input id="password" type="password" name="password" placeholder="Mot de passe" required>
+                      <div class="padding-button"><input type="submit" class="dropbtn" id="submit" value="S'identifier" onclick="snackFunction()"></div>
+                    </fieldset>
+                  </form>
+                </div>
+                {% endif %}
+
+              </li>
+              <li><a class="menu-item" href="/portfolio">Portfolio</a></li>
+              <li><a class="menu-item" href="/static/media/CV-Chamrouk-Mohamed.pdf">CV</a></li>
+              <li>
+                <label class="switch">
+                  <input type="checkbox" id="darkSwitch" class="checkbox" onclick="changeTheme()">
+                  <span class="toggle-thumb">
+
+                    <img width="20" height="20" id="img_switch" src="/static/media/sun.svg"/>
+                    <img width="20" height="20" id="img_switch" src="/static/media/moon.svg"/>
+
+                  </span>
+                </label>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </header>
+      <main class="box content">
+
+
+        {% block content %}{% endblock %}
+
+
+      </main>
+      <aside class="box sidebar">
+        {% block aside %}{% endblock %}
+      </aside>
+
+
+
+      <footer class="box footer">
+        {% block footer %}{% endblock %}
+
+        <script>
+
+
+        function myFunction() {
+          document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        function myLoginFunction() {
+          document.getElementById("myLoginDropdown").classList.toggle("show");
+        }
+        </script>
+        <script>
+        $(document).click(function(event) {
+          var $target = $(event.target);
+          if(!$target.closest('.dropdown').length &&
+          $('.dropdown-content').is(":visible")) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+          }
+        });
+        </script>
+
+
+
+      </footer>
+
+    </div>
+  </body>
+  <script type="text/javascript">
+  if (document.cookie.split(';').some(function(item) {
+    return item.trim().indexOf('theme=') == 0
+  })) {
+    if (document.cookie.split(';').some(function(item) {
+      return item.indexOf('theme=light') >= 0
+    })) {
+      var checkbox = document.getElementById("darkSwitch");
+      checkbox.setAttribute("checked", "true");
+    }
+  }
+</script>
+</html>
