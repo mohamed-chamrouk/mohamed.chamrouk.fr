@@ -1,0 +1,32 @@
+#submit {
+  margin: 0;
+  right: 50%;
+  left: 50%;
+}
+
+#login-list {
+  padding-left: 0px;
+}
+
+#inputs {
+  text-align: center;
+}
+
+fieldset {
+  border-style: none;
+  background-color: var(--background-color)
+}
+
+.padding-class {
+  padding-bottom: 10px;
+}
+
+.padding-button {
+  padding-top: 10px;
+  display: inline-block;
+}
+
+.notification.is-danger {
+  padding: 10px;
+  background: var(--secondary-color);
+}
