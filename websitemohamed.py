@@ -16,7 +16,6 @@ from sqlalchemy import create_engine
 from werkzeug.exceptions import abort
 
 app = Flask(__name__)
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager()
@@ -34,7 +33,7 @@ def load_user(user_id):
         # since the user_id is just the primary key of our user table, use it in the query for the user
         return User.query.get(int(user_id))
 
-@app.route("/portfolio")
+@app.route("/portfolio/")
 def portfolio():
     return render_template('portfolio.html')
 
@@ -47,7 +46,13 @@ def home() :
             ' ORDER BY created DESC').fetchall()
     return render_template('blog/blog.html', posts=posts, markdown=markdown)
 
-@app.route('/blog/create', methods=('GET', 'POST'))
+@app.route("/blog/<int:id>")
+def detail(id):
+    post = get_post(id)
+    app.logger.info(post)
+    return render_template('blog/blog_solo.html', post=post, markdown=markdown)
+
+@app.route('/blog/create/', methods=('GET', 'POST'))
 @login_required
 def create():
     if request.method == 'POST':
@@ -76,7 +81,7 @@ def create():
 def get_post(id, check_author=True):
     with engine.connect() as connection:
         post = connection.execute(
-            'SELECT p.id, title, body, created, author_id, username'
+            'SELECT p.id, title, body, created, author_id, username, u.name'
             ' FROM post p JOIN public."user" u ON p.author_id = u.id'
             ' WHERE p.id = %s',
             (id,)
@@ -85,13 +90,13 @@ def get_post(id, check_author=True):
     if post is None:
         abort(404, f"Le Post d'id {id} n'existe pas.")
 
-    if check_author and post['author_id'] != int(current_user.get_id()):
+    if check_author and current_user == None and post['author_id'] != int(current_user.get_id()):
         app.logger.info('auteur : '+str(post['author_id'])+', utilisateur : '+current_user.get_id())
         abort(403)
 
     return post
 
-@app.route('/blog/<int:id>/update', methods=('GET', 'POST'))
+@app.route('/blog/<int:id>/update/', methods=('GET', 'POST'))
 @login_required
 def update(id):
     post = get_post(id)
@@ -118,7 +123,7 @@ def update(id):
 
     return render_template('blog/update.html', post=post)
 
-@app.route('/blog/<int:id>/delete', methods=('POST',))
+@app.route('/blog/<int:id>/delete/', methods=('POST',))
 @login_required
 def delete(id):
     get_post(id)
