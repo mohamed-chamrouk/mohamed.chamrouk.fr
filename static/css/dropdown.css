@@ -11,6 +11,32 @@
 	color: white;
 }
 
+.dropbtn-invert {
+  color: var(--invert-font-color);
+  padding: 8px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--primary-color);
+}
+
+.dropbtn-invert:hover, .dropbtn-invert:focus{
+  background-color: var(--secondary-color);
+}
+
+.dropbtn-invert-danger {
+  color: var(--invert-font-color);
+  padding: 8px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  background-color: var(--error-color);
+}
+
+.dropbtn-invert-danger:hover, .dropbtn-invert-danger:focus{
+  background-color: var(--secondary-color);
+}
+
 .dropdown {
   position: relative;
   display: inline-block;

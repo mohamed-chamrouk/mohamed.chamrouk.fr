@@ -10,15 +10,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask import (Flask, abort, flash, Markup, redirect, render_template,
                    request, Response, session, url_for, Blueprint, has_request_context, g)
 from markdown import markdown
-from markdown.extensions.codehilite import CodeHiliteExtension
-from markdown.extensions.extra import ExtraExtension
-from micawber import bootstrap_basic, parse_html
-from micawber.cache import Cache as OEmbedCache
-from peewee import *
-from playhouse.flask_utils import FlaskDB, get_object_or_404, object_list
-from playhouse.sqlite_ext import *
+from markdown.extensions import fenced_code
 from sqlalchemy.dialects import postgresql
-from sqlalchemy.sql import exists
 from sqlalchemy import create_engine
 from werkzeug.exceptions import abort
 
@@ -41,34 +34,30 @@ def load_user(user_id):
         # since the user_id is just the primary key of our user table, use it in the query for the user
         return User.query.get(int(user_id))
 
-@app.route("/")
-def home():
-    return render_template('home.html')
-
 @app.route("/portfolio")
 def portfolio():
     return render_template('portfolio.html')
 
-@app.route("/blog")
-def blog() :
+@app.route("/")
+def home() :
     with engine.connect() as connection:
         posts = connection.execute(
-            'SELECT p.id, title, body, created, author_id, username'
+            'SELECT p.id, title, body, created, author_id, username, u.name'
             ' FROM post p JOIN public."user" u ON p.author_id = u.id'
             ' ORDER BY created DESC').fetchall()
-        app.logger.info(posts)
-    return render_template('blog.html', posts=posts)
+    return render_template('blog/blog.html', posts=posts, markdown=markdown)
 
-@app.route('/create', methods=('GET', 'POST'))
+@app.route('/blog/create', methods=('GET', 'POST'))
 @login_required
 def create():
     if request.method == 'POST':
+        app.logger.info(request)
         title = request.form['title']
         body = request.form['body']
         error = None
 
         if not title:
-            error = 'Title is required.'
+            error = 'Titre requis.'
 
         if error is not None:
             flash(error)
@@ -82,7 +71,7 @@ def create():
             db.session.commit()
             return redirect(url_for('home'))
 
-    return render_template('create.html')
+    return render_template('blog/create.html')
 
 def get_post(id, check_author=True):
     with engine.connect() as connection:
@@ -94,10 +83,10 @@ def get_post(id, check_author=True):
         ).fetchone()
 
     if post is None:
-        abort(404, f"Post id {id} doesn't exist.")
+        abort(404, f"Le Post d'id {id} n'existe pas.")
 
     if check_author and post['author_id'] != int(current_user.get_id()):
-        app.logger.info('authod : '+str(post['author_id'])+', current user : '+current_user.get_id())
+        app.logger.info('auteur : '+str(post['author_id'])+', utilisateur : '+current_user.get_id())
         abort(403)
 
     return post
@@ -127,7 +116,7 @@ def update(id):
             db.session.commit()
             return redirect(url_for('home'))
 
-    return render_template('update.html', post=post)
+    return render_template('blog/update.html', post=post)
 
 @app.route('/blog/<int:id>/delete', methods=('POST',))
 @login_required
@@ -148,9 +137,10 @@ def login_post():
     # check if the user actually exists
     # take the user-supplied password, hash it, and compare it to the hashed password in the database
     if not user or not check_password_hash(user.password, password):
-        flash('Please check your login details and try again.')
+        flash('Veuillez vérifier vos informations et réessayer.')
         return redirect(url_for('home'))
     # if the above check passes, then we know the user has the right credentials
+    flash('logged in')
     login_user(user)
     return redirect(url_for('home'))
 
