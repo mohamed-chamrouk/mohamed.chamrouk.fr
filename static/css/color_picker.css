@@ -1,0 +1,10 @@
+/* this file is just describe DEMO pages base style, its not required for correct work of extension */
+.colorpicker-custom {
+    border: 0px;
+    height: 34px;
+    width: 100px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+     border-radius: 20px;
+    text-align: center;
+}
