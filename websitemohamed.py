@@ -3,19 +3,22 @@ import functools
 import os
 import re
 import urllib
+import math
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import current_user, login_user, LoginManager, login_required, UserMixin, logout_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask import (Flask, abort, flash, Markup, redirect, render_template,
-                   request, Response, session, url_for, Blueprint, has_request_context, g)
+from flask import (Flask, abort, flash, redirect, render_template,
+                   request, url_for)
 from markdown import markdown
 from markdown.extensions import fenced_code
 from sqlalchemy.dialects import postgresql
 from sqlalchemy import create_engine
 from werkzeug.exceptions import abort
 
+
 app = Flask(__name__)
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager()
@@ -24,33 +27,50 @@ login_manager.init_app(app)
 
 
 class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True) # primary keys are required by SQLAlchemy
+    id = db.Column(db.Integer, primary_key=True)  # primary keys are required by SQLAlchemy
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
+
 
 @login_manager.user_loader
 def load_user(user_id):
         # since the user_id is just the primary key of our user table, use it in the query for the user
-        return User.query.get(int(user_id))
+    return User.query.get(int(user_id))
+
 
 @app.route("/portfolio/")
 def portfolio():
     return render_template('portfolio.html')
 
+
 @app.route("/")
-def home() :
+def home():
     with engine.connect() as connection:
         posts = connection.execute(
             'SELECT p.id, title, body, created, author_id, username, u.name'
             ' FROM post p JOIN public."user" u ON p.author_id = u.id'
             ' ORDER BY created DESC').fetchall()
-    return render_template('blog/blog.html', posts=posts, markdown=markdown)
+    total_page = math.ceil(len(posts)/5)
+    page = request.args.get("page")
+
+    if page:
+        if int(page) > total_page:
+            page = total_page
+        else:
+            page = int(page)
+        last_post = 5+5*(page-1) if len(posts) >= 5+5*(page-1) else len(posts)
+    else:
+        page = 1
+        last_post = len(posts)-1 if total_page > 1 else len(posts)
+    return render_template('blog/blog.html', posts=posts[(page-1)*5:last_post], markdown=markdown, current_page=page, total_page=total_page)
+
 
 @app.route("/blog/<int:id>")
 def detail(id):
     post = get_post(id)
     app.logger.info(post)
     return render_template('blog/blog_solo.html', post=post, markdown=markdown)
+
 
 @app.route('/blog/create/', methods=('GET', 'POST'))
 @login_required
@@ -68,7 +88,7 @@ def create():
             flash(error)
         else:
             with engine.connect() as connection:
-                posts = connection.execute(
+                connection.execute(
                     'INSERT INTO post (title, body, author_id)'
                     ' VALUES (%s, %s, %s)',
                     title, body, current_user.get_id()
@@ -77,6 +97,7 @@ def create():
             return redirect(url_for('home'))
 
     return render_template('blog/create.html')
+
 
 def get_post(id, check_author=True):
     with engine.connect() as connection:
@@ -90,11 +111,12 @@ def get_post(id, check_author=True):
     if post is None:
         abort(404, f"Le Post d'id {id} n'existe pas.")
 
-    if check_author and current_user == None and post['author_id'] != int(current_user.get_id()):
+    if check_author and current_user is None and post['author_id'] != int(current_user.get_id()):
         app.logger.info('auteur : '+str(post['author_id'])+', utilisateur : '+current_user.get_id())
         abort(403)
 
     return post
+
 
 @app.route('/blog/<int:id>/update/', methods=('GET', 'POST'))
 @login_required
@@ -113,7 +135,7 @@ def update(id):
             flash(error)
         else:
             with engine.connect() as connection:
-                posts = connection.execute(
+                connection.execute(
                     'UPDATE post SET title = %s, body = %s'
                     ' WHERE id = %s',
                     (title, body, id)
@@ -123,14 +145,16 @@ def update(id):
 
     return render_template('blog/update.html', post=post)
 
+
 @app.route('/blog/<int:id>/delete/', methods=('POST',))
 @login_required
 def delete(id):
     get_post(id)
     with engine.connect() as connection:
-        posts = connection.execute('DELETE FROM post WHERE id = %s', (id,))
+        connection.execute('DELETE FROM post WHERE id = %s', (id,))
     db.session.commit()
     return redirect(url_for('home'))
+
 
 @app.route('/login', methods=['POST'])
 def login_post():
@@ -149,9 +173,10 @@ def login_post():
     login_user(user)
     return redirect(url_for('home'))
 
+
 @app.route('/logout')
 @login_required
-def logout() :
+def logout():
     logout_user()
     return redirect(url_for('home'))
 
