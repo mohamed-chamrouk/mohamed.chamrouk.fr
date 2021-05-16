@@ -28,4 +28,15 @@
 <hr>
 {% endif %}
 {% endfor %}
+{% if total_page > 1 %}
+<div style="padding-top: 50px">
+  {% if current_page > 1 %}
+  <a href="?page={{ current_page-1 }}"> Page précédente</a>
+  {% endif %}
+  Page {{ current_page }} sur {{ total_page}}.
+  {% if current_page != total_page %}
+  <a href="?page={{ current_page+1 }}"> Page suivante </a>
+  {% endif %}
+</div>
+{% endif %}
 {% endblock %}
