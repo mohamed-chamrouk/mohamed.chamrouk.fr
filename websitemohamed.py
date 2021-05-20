@@ -18,33 +18,34 @@ from werkzeug.exceptions import abort
 from flask.logging import default_handler
 import logging
 from logging.config import dictConfig
-
-
+from flask import Flask, render_template, request, session, jsonify
+from datetime import datetime
+import httpagentparser
+import json
+import os
+import hashlib
+from databaseTrafficMonitoring import create_connection, create_session, update_or_create_page, select_all_sessions, select_all_user_visits, select_all_pages
 app = Flask(__name__)
 
+app.config.from_envvar('WEBSITE_SETTINGS')
+
+conn = create_connection(app, 'website_db')
+c = conn
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.init_app(app)
+# new_user = User(username="snow", name="snow", password=generate_password_hash("", method='sha256'))
+# db.session.add(new_user)
+# db.session.commit()
 
-
-class RequestFormatter(logging.Formatter):
-    def format(self, record):
-        if has_request_context():
-            record.url = request.url
-            record.remote_addr = request.remote_addr
-        else:
-            record.url = None
-            record.remote_addr = None
-
-        return super().format(record)
-
-
-formatter = RequestFormatter(
-    '[%(asctime)s] %(remote_addr)s requested %(url)s\n'
-    '%(levelname)s in %(module)s: %(message)s'
-)
-default_handler.setFormatter(formatter)
+userOS = None
+userIP = None
+userCity = None
+userBrowser = None
+userCountry = None
+userContinent = None
+sessionID = None
 
 
 class User(UserMixin, db.Model):
@@ -52,6 +53,65 @@ class User(UserMixin, db.Model):
     # primary keys are required by SQLAlchemy
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
+
+
+def monitoring_main():
+    global conn, c
+
+
+def parseVisitor(data):
+    update_or_create_page(c, data)
+
+
+@app.before_request
+def getAnalyticsData():
+    global userOS, userBrowser, userIP, userContinent, userCity, userCountry, sessionID
+    userInfo = httpagentparser.detect(request.headers.get('User-Agent'))
+    userOS = userInfo['platform']['name']
+    userBrowser = userInfo['browser']['name']
+    userIP = "212.111.40.134" if request.remote_addr == '127.0.0.1' else request.remote_addr
+    api = "https://www.iplocate.io/api/lookup/" + userIP
+    try:
+        resp = urllib.request.urlopen(api)
+        result = resp.read()
+        result = json.loads(result.decode("utf-8"))
+        userCountry = result["country"]
+        userContinent = result["continent"]
+        userCity = result["city"]
+    except:
+        print("Could not find: ", userIP)
+    getSession()
+
+
+def getSession():
+    global sessionID
+    time = datetime.now().replace(microsecond=0)
+    if 'user' not in session:
+        lines = (str(time)+userIP).encode('utf-8')
+        session['user'] = hashlib.md5(lines).hexdigest()
+        sessionID = session['user']
+        data = [userIP, userContinent, userCountry,
+                userCity, userOS, userBrowser, sessionID, time]
+        create_session(c, data)
+    else:
+        sessionID = session['user']
+
+
+def get_all_sessions():
+    data = []
+    dbRows = select_all_sessions(c)
+    for row in dbRows:
+        data.append({
+            'ip': row['ip'],
+            'continent': row['continent'],
+            'country': row['country'],
+            'city': row['city'],
+            'os': row['os'],
+            'browser': row['browser'],
+            'session': row['session'],
+            'time': row['created_at']
+        })
+    return data
 
 
 @login_manager.user_loader
@@ -68,9 +128,7 @@ def portfolio():
 
 @app.route("/")
 def home():
-    app.logger.info('Processing default request at URL : '+request.url+' \
-    from addr : '+request.remote_addr)
-    with engine.connect() as connection:
+    with conn.connect() as connection:
         posts = connection.execute(
             'SELECT p.id, title, body, created, author_id, username, u.name'
             ' FROM post p JOIN public."user" u ON p.author_id = u.id'
@@ -95,7 +153,8 @@ def home():
 @app.route("/dashboard")
 @login_required
 def dashboard():
-    return render_template('dashboard/dashboard.html')
+    return render_template('dashboard/dashboard.html', get_all_sessions=
+                           get_all_sessions, len=len, min=min)
 
 
 @app.route("/blog/<int:id>")
@@ -120,7 +179,7 @@ def create():
         if error is not None:
             flash(error)
         else:
-            with engine.connect() as connection:
+            with conn.connect() as connection:
                 connection.execute(
                     'INSERT INTO post (title, body, author_id)'
                     ' VALUES (%s, %s, %s)',
@@ -133,7 +192,7 @@ def create():
 
 
 def get_post(id, check_author=True):
-    with engine.connect() as connection:
+    with conn.connect() as connection:
         post = connection.execute(
             'SELECT p.id, title, body, created, author_id, username, u.name'
             ' FROM post p JOIN public."user" u ON p.author_id = u.id'
@@ -153,7 +212,7 @@ def get_post(id, check_author=True):
     return post
 
 
-@app.route('/blog/<int:id>/update/', methods=('GET', 'POST'))
+@app.route('/blog/update/<int:id>/', methods=('GET', 'POST'))
 @login_required
 def update(id):
     post = get_post(id)
@@ -169,7 +228,7 @@ def update(id):
         if error is not None:
             flash(error)
         else:
-            with engine.connect() as connection:
+            with conn.connect() as connection:
                 connection.execute(
                     'UPDATE post SET title = %s, body = %s'
                     ' WHERE id = %s',
@@ -181,11 +240,11 @@ def update(id):
     return render_template('blog/update.html', post=post)
 
 
-@app.route('/blog/<int:id>/delete/', methods=('POST',))
+@app.route('/blog/delete/<int:id>/', methods=('POST',))
 @login_required
 def delete(id):
     get_post(id)
-    with engine.connect() as connection:
+    with conn.connect() as connection:
         connection.execute('DELETE FROM post WHERE id = %s', (id,))
     db.session.commit()
     return redirect(url_for('home'))
@@ -219,4 +278,5 @@ def logout():
 
 
 if __name__ == '__main__':
+    monitoring_main()
     app.run(debug=True)

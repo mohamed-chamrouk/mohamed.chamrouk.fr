@@ -16,10 +16,10 @@
   <link rel="stylesheet" type="text/css" href="/static/css/dropdown.css">
   <link rel="stylesheet" type="text/css" href="/static/css/login.css">
   <link rel="stylesheet" type="text/css" href="/static/css/snackbar.css">
-  <script src="/static/js/html5kellycolorpicker.min.js"></script>
   <link href="/static/css/color_picker.css" rel="stylesheet">
 
   <script src="http://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="/static/js/color_picker.js"></script>
 
   {% block head %}{% endblock %}
   <script type="text/javascript">
@@ -67,24 +67,6 @@
     e.stopPropagation();
   });
   </script>
-
-  <style>
-  .popup-kelly-color-custom {
-    position : absolute;
-    display : none;
-    background-color : rgb(225, 225, 225);
-    border : 1px solid rgb(191, 191, 191);
-    box-shadow : rgba(0, 0, 0, 0.24) 7px 7px 14px -3px;
-    border-radius : 4px;
-    padding : 12px;
-    box-sizing : content-box;
-    left : 0px;
-    bottom : 100px;
-    border-radius: 110px;
-    margin-left: -30px;
-    margin-top: -10px;
-  }
-  </style>
 </head>
 <body>
   <div id="snackbar"> L'identification a réussi !</div>
@@ -104,6 +86,9 @@
         </div>
         <nav class="terminal-menu">
           <ul>
+            {% if current_user.is_authenticated %}
+            <li><a class="menu-item" href="/dashboard">Dashboard</a></li>
+            {% endif %}
             <li>
               {% if current_user.is_authenticated %}
               <a class="menu-item" href="/logout">Se déconnecter</a>
@@ -151,30 +136,13 @@
                   </span>
                 </label>
               </li>
+              {% if current_user.is_authenticated %}
               <li>
-                <input class="colorpicker-custom">
+                <input id="colorInput" class="colorpicker-custom">
+                <div style="width: 10px;"></div>
+                <button type="button" class="colorpicker-button" onclick="getInputValue();">Change</button>
               </li>
-              <script>
-              var colorpickers = KellyColorPicker.attachToInputByClass('colorpicker', {alpha_slider : true, size : 200});
-              var colorpickersCustom = KellyColorPicker.attachToInputByClass('colorpicker-custom', {alpha_slider : false, size : 200, popupClass : 'popup-kelly-color-custom'});
-              </script>
-              <style>
-              .popup-kelly-color-custom {
-                position : absolute;
-                display : none;
-                background-color : rgb(225, 225, 225);
-                border : 1px solid rgb(191, 191, 191);
-                box-shadow : rgba(0, 0, 0, 0.24) 7px 7px 14px -3px;
-                border-radius : 4px;
-                padding : 12px;
-                box-sizing : content-box;
-                left : 0px;
-                bottom : 100px;
-                border-radius: 110px;
-                margin-left: -30px;
-                margin-top: -10px;
-              }
-              </style>
+              {% endif %}
             </ul>
           </nav>
         </div>
