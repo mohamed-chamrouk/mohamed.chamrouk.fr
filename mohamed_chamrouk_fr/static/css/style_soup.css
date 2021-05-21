@@ -48,8 +48,17 @@ body {
   display: flex;
 }
 
+.wrapper-inside {
+  display: flex;
+}
+
 @media (max-width: 768px) {
   .wrapper {
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .wrapper-inside {
     flex-direction: column;
     min-height: 100vh;
   }
@@ -64,6 +73,15 @@ body {
     "header header"
     "sidebar content"
     "footer footer";
+  }
+
+  .wrapper-inside {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+    "blog git"
+    "blog git";
   }
 }
 

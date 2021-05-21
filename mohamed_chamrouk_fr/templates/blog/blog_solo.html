@@ -2,7 +2,7 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-<p>&raquo; <a class="action" href="{{ url_for('create') }}">Nouveau post</a></p>
+<p>&raquo; <a class="action" href="{{ url_for('blog.create') }}">Nouveau post</a></p>
 {% endif %}
 <article class="h-entry">
   <h1 class="p-name">
@@ -20,7 +20,7 @@
     <p>{{ markdown(post['body'], extensions=['fenced_code'])|safe }}</p>
   </div>
   {% if (current_user.get_id() | int) == post['author_id'] %}
-  <a class="dropbtn-invert" href="{{ url_for('update', id=post['id']) }}">Editer</a>
+  <a class="dropbtn-invert" href="{{ url_for('blog.update', id=post['id']) }}">Editer</a>
   {% endif %}
 </article>
 {% endblock %}
