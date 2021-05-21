@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine
+from mohamed_chamrouk_fr import app
 
 
-def create_connection(app, database):
+def create_connection():
     try:
         engine = create_engine(str(app.config['SQLALCHEMY_DATABASE_URI']))
         return engine
@@ -83,7 +84,6 @@ def select_all_user_visits(c, session_id):
 
 
 def main():
-    database = "website_db"
     sql_create_pages = """
         CREATE TABLE IF NOT EXISTS public.pages (
             id SERIAL PRIMARY KEY,
@@ -107,7 +107,7 @@ def main():
         );
     """
     # create a database connection
-    conn = create_connection(database)
+    conn = create_connection()
     if conn is not None:
         # create tables
         create_table(conn, sql_create_pages)
