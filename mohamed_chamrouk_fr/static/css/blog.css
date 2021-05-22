@@ -1,18 +1,18 @@
 #title {
-   border: 1px var(--input-style) var(--font-color);
-   width: 100%;
-   font-size: 1em;
-   padding: .5em;
-   background-color: var(--code-bg-color);
+  border: 1px var(--input-style) var(--font-color);
+  width: 100%;
+  font-size: 1em;
+  padding: .5em;
+  background-color: var(--code-bg-color);
 }
 
 textarea{
   border: 1px var(--input-style) var(--font-color);
-	width:100%;
+  width:100%;
   font-size: 1em;
   padding: .5em;
   white-space: nowrap;
-  overflow: auto;
+  overflow-x: scroll;
   background-color: var(--code-bg-color);
 }
 

@@ -24,6 +24,42 @@ body {
   background: #606060;
 }
 
+::-webkit-scrollbar-corner {
+  background: var(--background-color);
+}
+
+.commit-text {
+  color: var(--background-color);
+}
+
+.collapsible {
+  grid-area: two;
+  background-color: var(--secondary-color);
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  height: 50px;
+  font-family: var(--font-stack);
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  bottom: 20px;
+  overflow: hidden;
+}
+
+.active, .collapsible:hover {
+  background-color: var(--code-bg-color);
+}
+
+.coll-content {
+  grid-area: three;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
 .box {
   padding: 20px;
 }
@@ -42,6 +78,10 @@ body {
 
 .footer {
   grid-area: footer;
+}
+
+.wrapper-article {
+  grid-area: one;
 }
 
 .wrapper {
@@ -80,8 +120,8 @@ body {
     grid-gap: 10px;
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
-    "blog git"
-    "blog git";
+    "one two"
+    "one three";
   }
 }
 

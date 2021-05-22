@@ -2,32 +2,58 @@
 
 {% block content %}
 <div class="wrapper-inside">
-  <div style="height: fit-content">
+  <div class="wrapper-article" style="height: fit-content">
     {% if current_user.is_authenticated %}
     <p>&raquo; <a class="action" href="{{ url_for('blog.create') }}">Nouveau post</a></p>
     {% endif %}
     {% for post in posts %}
-    <article class="h-entry">
-      <h1 class="p-name">
-        <a class="u-url" href="/blog/{{post['id']}}">{{ post['title'] }}</a>
-      </h1>
-      <p>
-        par <a class="p-author h-card">{{ post['name'] }}</a>
-        le <a class="u-url">
-          <time class="dt-published" datetime="{{ post['created'].strftime('%Y-%m-%d %H:%M') }}">
-            {{ post['created'].strftime('%d %b %Y à %H:%M') }}
-          </time>
-        </a>
-      </p>
-      <div class="e-content">
-        <p>{{ markdown(post['body'], extensions=['fenced_code'])|safe }}</p>
-      </div>
-      {% if (current_user.get_id() | int) == post['author_id'] %}
-      <a class="dropbtn-invert" href="{{ url_for('blog.update', id=post['id']) }}">Editer</a>
-      {% endif %}
-    </article>
-    {% if not loop.last %}
-    {% endif %}
+      {% if post['hide'] == True %}
+        {% if current_user.is_authenticated %}
+          <article class="h-entry">
+            <h1 class="p-name">
+              <a class="u-url" href="/blog/{{post['id']}}">{{ post['title'] }}</a>
+            </h1>
+            <p>
+              par <a class="p-author h-card">{{ post['name'] }}</a>
+              le <a class="u-url">
+                <time class="dt-published" datetime="{{ post['created'].strftime('%Y-%m-%d %H:%M') }}">
+                  {{ post['created'].strftime('%d %b %Y à %H:%M') }}
+                </time>
+              </a>
+            </p>
+            <div class="e-content">
+              <p>{{ markdown(post['body'], extensions=['fenced_code'])|safe }}</p>
+            </div>
+            {% if (current_user.get_id() | int) == post['author_id'] %}
+            <a class="dropbtn-invert" href="{{ url_for('blog.update', id=post['id']) }}">Editer</a>
+            {% endif %}
+          </article>
+          {% if not loop.last %}
+          {% endif %}
+        {% endif %}
+      {% else %}
+        <article class="h-entry">
+          <h1 class="p-name">
+            <a class="u-url" href="/blog/{{post['id']}}">{{ post['title'] }}</a>
+          </h1>
+          <p>
+            par <a class="p-author h-card">{{ post['name'] }}</a>
+            le <a class="u-url">
+              <time class="dt-published" datetime="{{ post['created'].strftime('%Y-%m-%d %H:%M') }}">
+                {{ post['created'].strftime('%d %b %Y à %H:%M') }}
+              </time>
+            </a>
+          </p>
+          <div class="e-content">
+            <p>{{ markdown(post['body'], extensions=['fenced_code'])|safe }}</p>
+          </div>
+          {% if (current_user.get_id() | int) == post['author_id'] %}
+          <a class="dropbtn-invert" href="{{ url_for('blog.update', id=post['id']) }}">Editer</a>
+          {% endif %}
+        </article>
+        {% if not loop.last %}
+        {% endif %}
+      {%endif%}
     {% endfor %}
     {% if total_page > 1 %}
     <div style="padding-top: 50px">
@@ -41,15 +67,44 @@
     </div>
     {% endif %}
   </div>
-  <div class="terminal-timeline" >
-  {% for log in git_log %}
-  <div class="terminal-card">
-  <header>{{ log['sha'] }}</header>
-  <div>
-    Commit {{ log['sha'] }} en date du {{ log['date'] }} par {{ log['author'] }}.
+  <button class="collapsible">Ouvrir le détail des commits</button>
+  <div class="dynamic coll-content" style="overflow: scroll">
+  <div class="terminal-timeline">
+    {% for log in git_log %}
+    <div class="terminal-card">
+      <header><a class="commit-text" href="https://github.com/mohamed-chamrouk/mohamed.chamrouk.fr/commit/{{log['sha']}}">Commit n°{{length - loop.index}}</a></header>
+      <div>
+        Commit {{ log['sha'] }} en date du {{ log['date'] }} par {{ log['author'] }} : {{ log['message'] }}.
+      </div>
+    </div>
+    {% endfor %}
+    </div>
   </div>
-  </div>
-  {% endfor %}
-  </div>
-</div>
+<script>
+  $(document).ready(function() {
+    var timeline = $('.dynamic');
+    var wrapper = $('.wrapper-article');
+    if (wrapper.height() > 910) {
+      timeline.height(wrapper.height());
+    } else {
+      timeline.height(910);
+    }
+  });
+</script>
+<script>
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.maxHeight){
+        content.style.maxHeight = null;
+      } else {
+        content.style.maxHeight = content.scrollHeight + "px";
+      }
+    });
+  }
+</script>
 {% endblock %}

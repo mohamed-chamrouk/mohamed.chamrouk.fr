@@ -34,13 +34,15 @@ def get_git_log(branch):
     author = g.log('--pretty=format:%aN')
     date = g.log('--pretty=format:%cD')
     dict_log_list = []
+    j = 0
     for i in range(len(sha.split('\n'))):
-        dict_log_list.append({})
-        dict_log_list[i]['sha'] = sha.split('\n')[i]
-        dict_log_list[i]['message'] = message.split('\n')[i]
-        dict_log_list[i]['author'] = author.split('\n')[i]
-        dict_log_list[i]['date'] = date.split('\n')[i]
-    app.logger.info(dict_log_list)
+        if message.split('\n')[i] != '':
+            dict_log_list.append({})
+            dict_log_list[j]['sha'] = sha.split('\n')[i]
+            dict_log_list[j]['message'] = message.split('\n')[i]
+            dict_log_list[j]['author'] = author.split('\n')[i]
+            dict_log_list[j]['date'] = date.split('\n')[i]
+            j += 1
     return dict_log_list
 
 
@@ -112,7 +114,7 @@ def portfolio():
 def home():
     with conn.connect() as connection:
         posts = connection.execute(
-            'SELECT p.id, title, body, created, author_id, username, u.name'
+            'SELECT p.id, title, body, created, hide, author_id, username, u.name'
             ' FROM post p JOIN public."user" u ON p.author_id = u.id'
             ' ORDER BY created DESC').fetchall()
     total_page = math.ceil(len(posts)/5)
@@ -131,7 +133,8 @@ def home():
     git_log = get_git_log('main')
     return render_template('blog/blog.html', posts=posts[(page-1)*5:last_post],
                            markdown=markdown, current_page=page,
-                           total_page=total_page, git_log=git_log)
+                           total_page=total_page, git_log=git_log,
+                           length=len(git_log)+1)
 
 
 @app.route("/dashboard")

@@ -23,11 +23,25 @@ Crée le {{ post['created'].strftime('%d %b %Y à %H:%M') }}
     <textarea name="body" id="body-text" onInput="this.parentNode.dataset.replicatedValue = this.value">{{ request.form['body'] or post['body'] }}</textarea>
   </div>
   <input class="dropbtn-invert" type="submit" value="Sauvegarder">
+  <label for="check">Cacher le post au public : </label>
+  {% if post['hide'] == True %}
+  <input for="check" type="checkbox" name="hide" id="check" Checked>
+  {% else %}
+  <input for="check" type="checkbox" name="hide" id="check">
+  {% endif %}
 </form>
 <hr>
-<form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
-  <input class="dropbtn-invert-danger" type="submit" value="Supprimer" onclick="return confirm('Are you sure?');">
-</form>
+<div style="display: flex;">
+  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+    <input class="dropbtn-invert-danger" type="submit" value="Supprimer" onclick="return confirm('Are you sure?');">
+  </form>
+
+  <form action="/">
+    <div style="padding-left: 20px;">
+      <input class="dropbtn-invert" type="submit" style="left:20px; background: var(--secondary-color);" value="Annuler">
+    </div>
+  </form>
+</div>
 
 <script>
   autosize(document.getElementById("body-text"));
