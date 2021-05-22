@@ -19,6 +19,7 @@
      border-radius: 20px;
     text-align: center;
     color: white;
+    font-family: var(--font-stack);
 }
 
 .colorpicker-button:active {

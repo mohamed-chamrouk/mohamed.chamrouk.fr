@@ -21,6 +21,10 @@ def create():
         app.logger.info(request)
         title = request.form['title']
         body = request.form['body']
+        try:
+            hidden = request.form['hide']
+        except KeyError:
+            hidden = 'False'
         error = None
 
         if not title:
@@ -31,9 +35,9 @@ def create():
         else:
             with conn.connect() as connection:
                 connection.execute(
-                    'INSERT INTO post (title, body, author_id)'
-                    ' VALUES (%s, %s, %s)',
-                    title, body, current_user.get_id()
+                    'INSERT INTO post (title, body, author_id, hide)'
+                    ' VALUES (%s, %s, %s, %s)',
+                    title, body, current_user.get_id(), hidden
                 )
             return redirect(url_for('home'))
 
@@ -43,7 +47,7 @@ def create():
 def get_post(id, check_author=True):
     with conn.connect() as connection:
         post = connection.execute(
-            'SELECT p.id, title, body, created, author_id, username, u.name'
+            'SELECT p.id, title, body, created, hide, author_id, username, u.name'
             ' FROM post p JOIN public."user" u ON p.author_id = u.id'
             ' WHERE p.id = %s',
             (id,)
@@ -69,6 +73,10 @@ def update(id):
     if request.method == 'POST':
         title = request.form['title']
         body = request.form['body']
+        try:
+            hidden = request.form['hide']
+        except KeyError:
+            hidden = 'False'
         error = None
 
         if not title:
@@ -79,9 +87,9 @@ def update(id):
         else:
             with conn.connect() as connection:
                 connection.execute(
-                    'UPDATE post SET title = %s, body = %s'
+                    'UPDATE post SET title = %s, body = %s, hide = %s'
                     ' WHERE id = %s',
-                    (title, body, id)
+                    (title, body, hidden, id)
                 )
             return redirect(url_for('home'))
 
