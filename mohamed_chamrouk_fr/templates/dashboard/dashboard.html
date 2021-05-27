@@ -15,13 +15,9 @@ Recensement des dernières activitées monitorées sur le site.
 {% endblock %}
 
 {% block content %}
-<div>
-  <canvas id="myChart"></canvas>
-</div>
-
 <table>
   <caption>
-    Traffic récent (10 dernières connexions)
+    Traffic récent
   </caption>
   <thead>
     <tr>
@@ -34,7 +30,7 @@ Recensement des dernières activitées monitorées sur le site.
     </tr>
   </thead>
   <tbody>
-    {% for session in get_all_sessions()[:min(10, len(get_all_sessions()))] %}
+    {% for session in get_all_sessions() %}
     <tr>
       {% for k,v in session.items() %}
         {% if k not in ('session', 'continent') %}
