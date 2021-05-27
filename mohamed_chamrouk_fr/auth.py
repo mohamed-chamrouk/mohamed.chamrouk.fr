@@ -1,6 +1,6 @@
 from flask_login import login_user, login_required, UserMixin, logout_user, \
                         LoginManager
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from flask import (flash, redirect, request, url_for, Blueprint)
 from mohamed_chamrouk_fr import app
 from flask_sqlalchemy import SQLAlchemy
@@ -19,6 +19,12 @@ class User(UserMixin, db.Model):
     # primary keys are required by SQLAlchemy
     username = db.Column(db.String(100), unique=True)
     password = db.Column(db.String(100))
+    name = db.Column(db.String(100))
+
+
+#new_user = User(username="cham", name="Mohamed Chamrouk", password=generate_password_hash("", method='sha256'))
+#db.session.add(new_user)
+#db.session.commit()
 
 
 @login_manager.user_loader
