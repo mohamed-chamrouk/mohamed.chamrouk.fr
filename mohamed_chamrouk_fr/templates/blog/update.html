@@ -1,0 +1,49 @@
+{% extends 'base_backend.html' %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/static/css/blog.css">
+<script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+{% endblock %}
+
+{% block aside %}
+<h1 style="padding: 0px">
+  <a>
+    Edition de "{{ post['title'] }}"
+  </a>
+</h1>
+Crée le {{ post['created'].strftime('%d %b %Y à %H:%M') }}
+{% endblock %}
+
+{% block content %}
+<form method="post">
+  <div id="div-title"><a>Titre</a></div>
+  <input name="title" id="title" class="blog-text" value="{{ request.form['title'] or post['title'] }}" required>
+  <div id="div-title-bis"><a>Corps de texte</a></div>
+  <div class="grow-wrap">
+    <textarea name="body" id="body-text" onInput="this.parentNode.dataset.replicatedValue = this.value">{{ request.form['body'] or post['body'] }}</textarea>
+  </div>
+  <input class="dropbtn-invert" type="submit" value="Sauvegarder">
+  <label for="check">Cacher le post au public : </label>
+  {% if post['hide'] == True %}
+  <input for="check" type="checkbox" name="hide" id="check" Checked>
+  {% else %}
+  <input for="check" type="checkbox" name="hide" id="check">
+  {% endif %}
+</form>
+<hr>
+<div style="display: flex;">
+  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+    <input class="dropbtn-invert-danger" type="submit" value="Supprimer" onclick="return confirm('Are you sure?');">
+  </form>
+
+  <form action="/">
+    <div style="padding-left: 20px;">
+      <input class="dropbtn-invert" type="submit" style="left:20px; background: var(--secondary-color);" value="Annuler">
+    </div>
+  </form>
+</div>
+
+<script>
+  autosize(document.getElementById("body-text"));
+</script>
+{% endblock %}

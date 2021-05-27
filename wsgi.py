@@ -1,4 +1,6 @@
-from websitemohamed import app
+from mohamed_chamrouk_fr import app
+
+application = app
 
 if __name__ == "__main__":
-    app.run()
+    application.run()

@@ -1,0 +1,32 @@
+{% extends 'base_backend.html' %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="/static/css/blog.css">
+<script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+{% endblock %}
+
+{% block aside %}
+<h1 style="padding: 0px">
+  <a>
+    Nouveau Post
+  </a>
+</h1>
+{% endblock %}
+
+{% block content %}
+<form method="post">
+  <div id="div-title"><a>Titre</a></div>
+  <input name="title" id="title" class="blog-text" value="{{ request.form['title'] }}" required>
+  <div id="div-title-bis"><a>Corps de texte</a></div>
+  <div class="grow-wrap">
+    <textarea name="body" id="body-text" onInput="this.parentNode.dataset.replicatedValue = this.value">{{ request.form['body']}}</textarea>
+  </div>
+  <input class="dropbtn-invert" type="submit" value="Enregistrer">
+  <label for="check">Cacher le post au public : </label>
+  <input for="check" type="checkbox" name="hide" id="check">
+</form>
+
+<script>
+  autosize(document.getElementById("body-text"));
+</script>
+{% endblock %}
