@@ -1,0 +1,27 @@
+.colorpicker-custom {
+    border: 0px;
+    height: 34px;
+    width: 100px;
+    background-color: var(--primary-color);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+     border-radius: 20px;
+    text-align: center;
+}
+
+.colorpicker-button {
+    border: 0px;
+    height: 34px;
+    width: 70px;
+    background-color: var(--secondary-color);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+     border-radius: 20px;
+    text-align: center;
+    color: white;
+    font-family: var(--font-stack);
+}
+
+.colorpicker-button:active {
+  background-color: var(--code-bg-color);
+}

@@ -1,0 +1,30 @@
+#title {
+  border: 1px var(--input-style) var(--font-color);
+  width: 100%;
+  font-size: 1em;
+  padding: .5em;
+  background-color: var(--code-bg-color);
+}
+
+textarea{
+  border: 1px var(--input-style) var(--font-color);
+  width:100%;
+  font-size: 1em;
+  padding: .5em;
+  white-space: nowrap;
+  overflow-x: scroll;
+  background-color: var(--code-bg-color);
+}
+
+#div-title {
+  padding-bottom: 5px;
+}
+
+#div-title-bis {
+  padding-bottom: 5px;
+  padding-top: 15px;
+}
+
+.grow-wrap {
+  padding-bottom: 20px;
+}

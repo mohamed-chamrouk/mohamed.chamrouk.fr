@@ -1,0 +1,9 @@
+flask
+flask_login
+flask_migrate
+flask_sqlalchemy
+gitpython
+httpagentparser
+markdown
+psycopg2-binary
+werkzeug
