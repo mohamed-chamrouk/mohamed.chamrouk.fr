@@ -12,6 +12,7 @@ html{
   --tertiary-color: #a3abba;
   --primary-color: #62c4ff;
   --error-color: #ff3c74;
+  --grid-color: #888888;
   --progress-bar-background: #3f3f44;
   --progress-bar-fill: #62c4ff;
   --code-bg-color: #3f3f44;
@@ -33,6 +34,7 @@ html[data-theme='light'] {
   --tertiary-color: #a3abba;
   --primary-color: #62c4ff;
   --error-color: #ff3c74;
+  --grid-color: #d5d5d5;
   --progress-bar-background: #3f3f44;
   --progress-bar-fill: #62c4ff;
   --code-bg-color: #d0d0d0;

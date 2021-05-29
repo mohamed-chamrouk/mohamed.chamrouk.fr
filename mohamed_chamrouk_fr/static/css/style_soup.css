@@ -88,6 +88,18 @@ body {
   display: flex;
 }
 
+.canva1 {
+  grid-area: two;
+}
+
+.canva2 {
+  grid-area: three;
+}
+
+.canva3 {
+  grid-area: four;
+}
+
 .wrapper-inside {
   display: flex;
 }
@@ -102,6 +114,10 @@ body {
     flex-direction: column;
     min-height: 100vh;
   }
+
+  .wrapper-dashboard .to-border {
+    margin-bottom: 10px;
+  }
 }
 
 @media (min-width: 768px) {
@@ -113,6 +129,16 @@ body {
     "header header"
     "sidebar content"
     "footer footer";
+  }
+
+  .wrapper-dashboard {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+    "one one"
+    "two three"
+    "two four";
   }
 
   .wrapper-inside {

@@ -14,5 +14,7 @@ setup(
         , 'markdown'
         , 'psycopg2-binary'
         , 'gitpython'
+        , 'uwsgi'
+        , 'Flask-Caching'
     ],
 )
