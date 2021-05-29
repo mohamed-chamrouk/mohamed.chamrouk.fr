@@ -1,3 +1,4 @@
+Flask-Caching
 flask
 flask_login
 flask_migrate
@@ -6,4 +7,5 @@ gitpython
 httpagentparser
 markdown
 psycopg2-binary
+uwsgi
 werkzeug
