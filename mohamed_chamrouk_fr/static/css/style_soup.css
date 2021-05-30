@@ -54,7 +54,7 @@ body {
 }
 
 .coll-content {
-  grid-area: three;
+  grid-area: four;
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.5s ease-out;
@@ -81,7 +81,7 @@ body {
 }
 
 .wrapper-article {
-  grid-area: one;
+  grid-area: three;
 }
 
 .wrapper {
@@ -146,7 +146,7 @@ body {
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
     "one two"
-    "one three";
+    "three four";
   }
 }
 
