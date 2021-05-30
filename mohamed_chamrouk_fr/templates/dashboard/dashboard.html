@@ -19,7 +19,7 @@ Recensement des dernières activitées monitorées sur le site.
 
 <div class="wrapper-dashboard">
   <div class="to-border" style="grid-area: one;">
-    <div style="text-align: center">Totalité du traffic</div>
+    <div style="text-align: center">Informations détaillées sur le traffic</div>
     <div class="info-table">
       <table>
         <thead>
@@ -46,16 +46,16 @@ Recensement des dernières activitées monitorées sur le site.
       </table>
     </div>
   </div>
-  <div class="canva1 to-border" style="width: 100%; height: 49%;">
-    <div style="text-align: center"> Traffic par jour </div>
+  <div class="canva1 to-border" style="width: 100%">
+    <div style="text-align: center">Traffic sur les 7 derniers jours</div>
     <canvas id="myBarChart"></canvas>
   </div>
   <div class="canva2 to-border" style="height: 100%; width: 100%;">
-    <div style="text-align: center"> Pays visiteurs </div>
+    <div style="text-align: center">Pays visiteurs</div>
       <canvas id="myPieChartCountries"></canvas>
   </div>
   <div class="canva3 to-border" style="height: 100%; width: 100%;">
-    <div style="text-align: center">villes visitrices </div>
+    <div style="text-align: center">Villes visitrices</div>
       <canvas id="myPieChartCities"></canvas>
   </div>
 </div>
@@ -85,7 +85,6 @@ Recensement des dernières activitées monitorées sur le site.
       },
       responsive: true,
       maintainAspectRatio: true,
-      aspectRatio: 1,
       title: {
         display: true,
         text: "World Wine Production 2018"
@@ -127,10 +126,6 @@ Recensement des dernières activitées monitorées sur le site.
       }]
     },
     options: {
-      title: {
-        display: true,
-        text: "World Wide Wine Production 2018"
-      },
       plugins: {
         legend: {
           position: 'left'
@@ -154,10 +149,6 @@ Recensement des dernières activitées monitorées sur le site.
       }]
     },
     options: {
-      title: {
-        display: true,
-        text: "World Wide Wine Production 2018"
-      },
       plugins: {
         legend: {
           position: 'right'

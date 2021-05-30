@@ -136,9 +136,8 @@ body {
     grid-gap: 10px;
     grid-template-columns: 1fr 1fr;
     grid-template-areas:
-    "one one"
-    "two three"
-    "two four";
+    "one two"
+    "three four";
   }
 
   .wrapper-inside {
