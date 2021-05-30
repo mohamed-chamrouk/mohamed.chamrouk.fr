@@ -15,66 +15,146 @@ Recensement des dernières activitées monitorées sur le site.
 {% endblock %}
 
 {% block content %}
-<table>
-  <caption>
-    Traffic récent
-  </caption>
-  <thead>
-    <tr>
-      <th>@IP</th>
-      <th>Pays</th>
-      <th>Ville</th>
-      <th>OS</th>
-      <th>Navigateur</th>
-      <th>Date</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for session in get_all_sessions() %}
-    <tr>
-      {% for k,v in session.items() %}
-        {% if k not in ('session', 'continent') %}
-        <td>{{ v }}</td>
-        {% endif %}
-      {% endfor %}
-    </tr>
-    {%endfor%}
-  </tbody>
-</table>
 
-<!--
-<script type="text/javascript">
-var xyValues = [
-{x:50, y:7},
-{x:60, y:8},
-{x:70, y:8},
-{x:80, y:9},
-{x:90, y:9},
-{x:100, y:9},
-{x:110, y:10},
-{x:120, y:11},
-{x:130, y:14},
-{x:140, y:14},
-{x:150, y:15}
-];
 
-new Chart("myChart", {
-type: "scatter",
-data: {
-datasets: [{
-pointRadius: 4,
-pointBackgroundColor: "rgb(0,0,255)",
-data: xyValues
-}]
-},
-options: {
-legend: {display: false},
-scales: {
-xAxes: [{ticks: {min: 40, max:160}}],
-yAxes: [{ticks: {min: 6, max:16}}],
-}
-}
-});
+<div class="wrapper-dashboard">
+  <div class="to-border" style="grid-area: one;">
+    <div style="text-align: center">Informations détaillées sur le traffic</div>
+    <div class="info-table">
+      <table>
+        <thead>
+          <tr>
+            <th>@IP</th>
+            <th>Pays</th>
+            <th>Ville</th>
+            <th>OS</th>
+            <th>Navigateur</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for session in get_all_sessions() %}
+          <tr>
+            {% for k,v in session.items() %}
+            {% if k not in ('session', 'continent') %}
+            <td>{{ v }}</td>
+            {% endif %}
+            {% endfor %}
+          </tr>
+          {%endfor%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="canva1 to-border" style="width: 100%">
+    <div style="text-align: center">Traffic sur les 7 derniers jours</div>
+    <canvas id="myBarChart"></canvas>
+  </div>
+  <div class="canva2 to-border" style="height: 100%; width: 100%;">
+    <div style="text-align: center">Pays visiteurs</div>
+      <canvas id="myPieChartCountries"></canvas>
+  </div>
+  <div class="canva3 to-border" style="height: 100%; width: 100%;">
+    <div style="text-align: center">Villes visitrices</div>
+      <canvas id="myPieChartCities"></canvas>
+  </div>
+</div>
+
+<script>
+  var xValuesBar = {{ dates|safe }};
+  var yValuesBar = {{ values|safe }};
+  var barColorsBar = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+  var grid_color = getComputedStyle(document.documentElement).getPropertyValue('--grid-color');
+  var font_color = getComputedStyle(document.documentElement).getPropertyValue('--font-color');
+  Chart.defaults.color = font_color;
+
+  new Chart("myBarChart", {
+    type: "bar",
+    data: {
+      labels: xValuesBar,
+      datasets: [{
+        backgroundColor: barColorsBar,
+        data: yValuesBar
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          display: false
+        }
+      },
+      responsive: true,
+      maintainAspectRatio: true,
+      title: {
+        display: true,
+        text: "World Wine Production 2018"
+      },
+      scales: {
+        x: {
+          grid: {
+            color: grid_color
+          }
+        },
+        y: {
+          grid: {
+            color: grid_color
+          }
+        }
+      }
+    }
+  });
+
+  var NamesPie_countries = {{ countries|safe }};
+  var ValuesPie_countries = {{ values_co }};
+  var NamesPie_cities = {{ cities|safe }};
+  var ValuesPie_cities = {{ values_ci }};
+  var gradientColors_countries = ['#ebf8ff', '#c4e9ff', "#9ddaff", "#76cbff", "#4ebdff", "#27aeff", "#009fff", "#0087d8", "#006eb1", "#005689", "#003d62","#00253b"]
+  var gradientColors_cities = ["#7692fc", "#708af0", "#6a83e5", "#647bd9", "#5e74ce", "#586dc3", "#5265b8", "#4c5ead", "#4657a2", "#405197", "#3a4a8d", "#354382", "#2f3c78", "#29366e", "#243064", "#1e2a5a", "#182350", "#131e47", "#0d183e", "#081235"]
+
+  new Chart("myPieChartCountries", {
+    type: "pie",
+    defaults: {
+      color: font_color
+    },
+
+    data: {
+      labels: NamesPie_countries,
+      datasets: [{
+        borderWidth: 0,
+        backgroundColor: gradientColors_countries,
+        data: ValuesPie_countries
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: 'left'
+        }
+      }
+    }
+  });
+
+  new Chart("myPieChartCities", {
+    type: "pie",
+    defaults: {
+      color: font_color
+    },
+
+    data: {
+      labels: NamesPie_cities,
+      datasets: [{
+        borderWidth: 0,
+        backgroundColor: gradientColors_cities,
+        data: ValuesPie_cities
+      }]
+    },
+    options: {
+      plugins: {
+        legend: {
+          position: 'right'
+        }
+      }
+    }
+  });
 </script>
--->
 {% endblock %}

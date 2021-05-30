@@ -80,31 +80,32 @@
       {% endfor %}
     </div>
   </div>
-  <script>
-    $(document).ready(function() {
-      var timeline = $('.dynamic');
-      var wrapper = $('.wrapper-article');
-      if (wrapper.height() > 760) {
-        timeline.height(wrapper.height());
+</div>
+<script>
+  $(document).ready(function() {
+    var timeline = $('.dynamic');
+    var wrapper = $('.wrapper-article');
+    if (wrapper.height() > 760) {
+      timeline.height(wrapper.height());
+    } else {
+      timeline.height(760);
+    }
+  });
+</script>
+<script>
+  var coll = document.getElementsByClassName("collapsible");
+  var i;
+
+  for (i = 0; i < coll.length; i++) {
+    coll[i].addEventListener("click", function() {
+      this.classList.toggle("active");
+      var content = this.nextElementSibling;
+      if (content.style.maxHeight){
+        content.style.maxHeight = null;
       } else {
-        timeline.height(760);
+        content.style.maxHeight = content.scrollHeight + "px";
       }
     });
-  </script>
-  <script>
-    var coll = document.getElementsByClassName("collapsible");
-    var i;
-
-    for (i = 0; i < coll.length; i++) {
-      coll[i].addEventListener("click", function() {
-        this.classList.toggle("active");
-        var content = this.nextElementSibling;
-        if (content.style.maxHeight){
-          content.style.maxHeight = null;
-        } else {
-          content.style.maxHeight = content.scrollHeight + "px";
-        }
-      });
-    }
-  </script>
-  {% endblock %}
+  }
+</script>
+{% endblock %}

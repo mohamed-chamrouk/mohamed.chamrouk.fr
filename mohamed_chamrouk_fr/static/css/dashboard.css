@@ -1,0 +1,9 @@
+.to-border {
+  border: 1px solid var(--font-color);
+  padding: 1em;
+}
+
+.info-table {
+  height: 300px;
+  overflow: scroll;
+}

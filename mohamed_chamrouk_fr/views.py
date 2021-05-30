@@ -4,13 +4,17 @@ import git
 import httpagentparser
 import json
 import hashlib
-from mohamed_chamrouk_fr.database import (create_session, update_or_create_page,
-                                          select_all_sessions)
+from mohamed_chamrouk_fr.database import (create_session,
+                                          update_or_create_page,
+                                          select_all_sessions,
+                                          select_num_sessions,
+                                          select_num_countries,
+                                          select_num_cities)
 from flask_login import login_required
 from flask import (render_template, session, request)
 from markdown import markdown
 from datetime import datetime
-from mohamed_chamrouk_fr import app, conn, c
+from mohamed_chamrouk_fr import app, conn, cache
 from mohamed_chamrouk_fr.auth import auth
 from mohamed_chamrouk_fr.blog import blog
 
@@ -27,6 +31,7 @@ userContinent = None
 sessionID = None
 
 
+@cache.cached(timeout=3600, key_prefix='all_comments')
 def get_git_log(branch):
     g = git.Git("$HOME/mohamed_chamrouk_fr")
     sha = g.log('--pretty=format:%h')
@@ -46,12 +51,8 @@ def get_git_log(branch):
     return dict_log_list
 
 
-def monitoring_main():
-    global conn, c
-
-
 def parseVisitor(data):
-    update_or_create_page(c, data)
+    update_or_create_page(conn, data)
 
 
 @app.before_request
@@ -60,7 +61,7 @@ def getAnalyticsData():
     userInfo = httpagentparser.detect(request.headers.get('User-Agent'))
     userOS = userInfo['platform']['name']
     userBrowser = userInfo['browser']['name']
-    userIP = "212.111.40.134" if request.remote_addr == '127.0.0.1' else request.remote_addr
+    userIP = request.remote_addr
     api = "https://www.iplocate.io/api/lookup/" + userIP
     try:
         resp = urllib.request.urlopen(api)
@@ -74,6 +75,9 @@ def getAnalyticsData():
         userCountry = "unknown"
         userContinent = "unknown"
         userCity = "unknown"
+    userCountry = "unknown" if userCountry is None else userCountry
+    userCity = "unknown" if userCity is None else userCity
+    userContinent = "unknown" if userContinent is None else userContinent
     getSession()
 
 
@@ -86,14 +90,14 @@ def getSession():
         sessionID = session['user']
         data = [userIP, userContinent, userCountry,
                 userCity, userOS, userBrowser, sessionID, time]
-        create_session(c, data)
+        create_session(conn, data)
     else:
         sessionID = session['user']
 
 
 def get_all_sessions():
     data = []
-    dbRows = select_all_sessions(c)
+    dbRows = select_all_sessions(conn)
     for row in dbRows:
         data.append({
             'ip': row['ip'],
@@ -105,7 +109,37 @@ def get_all_sessions():
             'session': row['session'],
             'time': row['created_at']
         })
-    return data
+    return data[::-1]
+
+
+def get_num_sessions():
+    dates = []
+    values = []
+    dbRows = select_num_sessions(conn)
+    for row in dbRows:
+        dates.append(row['created_at'].strftime("%d-%m-%Y"))
+        values.append(row['count'])
+    return dates, values
+
+
+def get_num_countries():
+    countries = []
+    values = []
+    dbRows = select_num_countries(conn)
+    for row in dbRows:
+        countries.append(str(row['country']))
+        values.append(row['count'])
+    return countries, values
+
+
+def get_num_cities():
+    cities = []
+    values = []
+    dbRows = select_num_cities(conn)
+    for row in dbRows:
+        cities.append(str(row['city']))
+        values.append(row['count'])
+    return cities, values
 
 
 @app.route("/portfolio/")
@@ -143,10 +177,18 @@ def home():
 @app.route("/dashboard")
 @login_required
 def dashboard():
+    dates, values_d = get_num_sessions()
+    countries, values_co = get_num_countries()
+    cities, values_ci = get_num_cities()
+    app.logger.info("\n dates : "+str(dates)+"\n countries : "+str(countries)+"\n cities : "+str(cities))
     return render_template('dashboard/dashboard.html', get_all_sessions=
-                           get_all_sessions, len=len, min=min)
+                           get_all_sessions, len=len, min=min,
+                           dates=dates[max(0, len(dates)-7):],
+                           countries=countries, cities=cities,
+                           values=values_d[max(0, len(values_d)-7):],
+                           values_co=values_co,
+                           values_ci=values_ci)
 
 
 if __name__ == '__main__':
-    monitoring_main()
     app.run(debug=True)
