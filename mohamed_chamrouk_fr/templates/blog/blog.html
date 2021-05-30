@@ -2,10 +2,13 @@
 
 {% block content %}
 <div class="wrapper-inside">
+  {% if current_user.is_authenticated %}
+  <p style="grid-area: one">&raquo; <a class="action" href="{{ url_for('blog.create') }}">Nouveau post</a></p>
+  {% endif %}
   <div class="wrapper-article" style="height: fit-content">
-    {% if current_user.is_authenticated %}
-    <p>&raquo; <a class="action" href="{{ url_for('blog.create') }}">Nouveau post</a></p>
-    {% endif %}
+
+
+
     {% for post in posts %}
     {% if post['hide'] == True %}
     {% if current_user.is_authenticated %}
