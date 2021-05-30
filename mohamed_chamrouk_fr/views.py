@@ -75,6 +75,9 @@ def getAnalyticsData():
         userCountry = "unknown"
         userContinent = "unknown"
         userCity = "unknown"
+    userCountry = "unknown" if userCountry is None else userCountry
+    userCity = "unknown" if userCity is None else userCity
+    userContinent = "unknown" if userContinent is None else userContinent
     getSession()
 
 
@@ -114,7 +117,7 @@ def get_num_sessions():
     values = []
     dbRows = select_num_sessions(conn)
     for row in dbRows:
-        dates.append(row['created_at'].strftime("%m-%d-%Y"))
+        dates.append(row['created_at'].strftime("%d-%m-%Y"))
         values.append(row['count'])
     return dates, values
 
@@ -180,8 +183,10 @@ def dashboard():
     app.logger.info("\n dates : "+str(dates)+"\n countries : "+str(countries)+"\n cities : "+str(cities))
     return render_template('dashboard/dashboard.html', get_all_sessions=
                            get_all_sessions, len=len, min=min,
-                           dates=dates, countries=countries, cities=cities,
-                           values=values_d, values_co=values_co,
+                           dates=dates[max(0, len(dates)-7):],
+                           countries=countries, cities=cities,
+                           values=values_d[max(0, len(values_d)-7):],
+                           values_co=values_co,
                            values_ci=values_ci)
 
 
