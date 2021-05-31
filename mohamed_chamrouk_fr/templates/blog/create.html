@@ -16,7 +16,7 @@
 {% block content %}
 <form method="post">
   <div id="div-title"><a>Titre</a></div>
-  <input name="title" id="title" class="blog-text" value="{{ request.form['title'] }}" required>
+  <input style="font-family: var(--font-stack)" name="title" id="title" class="blog-text" value="{{ request.form['title'] }}" required>
   <div id="div-title-bis"><a>Corps de texte</a></div>
   <div class="grow-wrap">
     <textarea name="body" id="body-text" onInput="this.parentNode.dataset.replicatedValue = this.value">{{ request.form['body']}}</textarea>
