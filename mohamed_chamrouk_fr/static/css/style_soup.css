@@ -118,9 +118,29 @@ body {
   .wrapper-dashboard .to-border {
     margin-bottom: 10px;
   }
+
+  .table-info {
+    font-size: 10px;
+  }
+
+  .terminal-menu {
+    display: none;
+  }
+
+  #menu-button {
+    display: inline-block;
+  }
+
+  .terminal-nav{
+		flex-direction:column;
+  }
 }
 
 @media (min-width: 768px) {
+  #menu-button {
+    display: none;
+  }
+
   .wrapper {
     display: grid;
     grid-gap: 10px;
@@ -146,7 +166,12 @@ body {
     grid-template-columns: 2fr 1fr;
     grid-template-areas:
     "one two"
-    "three four";
+    "one four";
+    grid-template-rows: 50px auto;
+  }
+
+  .terminal-menu {
+    display: block !important;
   }
 }
 

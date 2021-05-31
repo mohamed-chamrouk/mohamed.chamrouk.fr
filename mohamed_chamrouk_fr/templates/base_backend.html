@@ -2,7 +2,7 @@
 <html lang="fr">
 <html class="h-feed">
 <head>
-  <link rel="icon" href="/static/media/favicon.png">
+  <link rel="icon" href="/static/media/logo_gradient.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -16,10 +16,10 @@
   <link rel="stylesheet" type="text/css" href="/static/css/dropdown.css">
   <link rel="stylesheet" type="text/css" href="/static/css/login.css">
   <link rel="stylesheet" type="text/css" href="/static/css/snackbar.css">
-  <link href="/static/css/color_picker.css" rel="stylesheet">
+
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="/static/js/color_picker.js"></script>
+
 
   {% block head %}{% endblock %}
   <script type="text/javascript">
@@ -76,13 +76,40 @@
 
     <header class="box header">
       <div class="terminal-nav">
-        <div class="terminal-logo">
-          <div class="logo">
+        <div class="terminal-logo" style="width:100%">
+          <div style="float: left; padding-top: 20px; padding-bottom: 20px; padding-top: calc(var(--global-space) * 3); display: inline-block">
+            <svg width="37" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="e23dJHI0wty1" width="50" viewBox="50 12 100 100" shape-rendering="geometricPrecision" text-rendering="geometricPrecision">
+              <g id="e23dJHI0wty6">
+                <polygon id="e23dJHI0wty8" points="0,-37.511115 37.511115,0 0,37.511115 -37.511115,0 0,-37.511115" transform="matrix(0.28046229868445 0 0 0.46833939252961 99.99999999999989 41.07489930999991)" fill="rgb(98,196,255)" stroke="none" stroke-width="0"/>
+                <g id="e23dJHI0wty9">
+                  <path id="e23dJHI0wty10" d="M81.154960,74.955430L89.479550,61.054340L100,78.622270L110.520450,61.054340L118.845040,74.955430L108.304050,92.557650L108.324580,92.591940L99.999990,106.493030L91.675400,92.591940L91.695930,92.557650L81.154960,74.955430Z" fill="rgb(98,196,255)" stroke="none" stroke-width="0"/>
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="logo" style="padding-top: calc(var(--global-space) * 3); display: inline-block">
+
             <a class="p-name u-url" href="/" class="no-style">
-              Mohamed
+
+              Mohamed <br>
               Chamrouk.
             </a>
           </div>
+          <div id="menu-button" style="float: right; padding-top: 34px; width: 30px; ">
+            <img height="30" style="width:auto; margin-left: auto; margin-right: auto" id="img_menu" src="/static/media/menu.png" onclick="showMenu()"/>
+          </div>
+          <script>
+          function showMenu() {
+            var elements = document.getElementsByClassName("terminal-menu"); //Get the element
+            Array.prototype.filter.call(elements, function(element){
+              if (element.style.display == "block") {
+                element.style.display = "none";
+              } else {
+                element.style.display = "block";
+              }
+            });
+          }
+          </script>
         </div>
         <nav class="terminal-menu">
           <ul>
@@ -106,6 +133,7 @@
                   <script>
                   snackFunction("snackbar-error");
                   document.getElementById("myLoginDropdown").classList.toggle("show");
+                  showMenu();
                   </script>
                   <div class="notification is-danger">
                     {{ messages[0] }}</a>.
@@ -137,6 +165,8 @@
                 </label>
               </li>
               {% if current_user.is_authenticated %}
+              <link href="/static/css/color_picker.css" rel="stylesheet">
+            <script src="/static/js/color_picker.js"></script>
               <li>
                 <input id="colorInput" class="colorpicker-custom">
                 <div style="width: 10px;"></div>
@@ -195,18 +225,19 @@
       </footer>
 
     </div>
-  </body>
-  <script type="text/javascript">
+  </div>
+</body>
+<script type="text/javascript">
+if (document.cookie.split(';').some(function(item) {
+  return item.trim().indexOf('theme=') == 0
+})) {
   if (document.cookie.split(';').some(function(item) {
-    return item.trim().indexOf('theme=') == 0
+    return item.indexOf('theme=light') >= 0
   })) {
-    if (document.cookie.split(';').some(function(item) {
-      return item.indexOf('theme=light') >= 0
-    })) {
-      var checkbox = document.getElementById("darkSwitch");
-      checkbox.setAttribute("checked", "true");
-    }
+    var checkbox = document.getElementById("darkSwitch");
+    checkbox.setAttribute("checked", "true");
   }
+}
 </script>
 
 </html>

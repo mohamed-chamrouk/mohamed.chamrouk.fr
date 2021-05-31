@@ -270,6 +270,7 @@ ul ul{
 	padding:0!important;
 	display:flex;
 	flex-direction:column;
+  align-items: center;
 	width:100%;
 	flex-grow:1;
 	font-size:var(--global-font-size);
@@ -674,7 +675,6 @@ input:-webkit-autofill,input:-webkit-autofill:focus textarea:-webkit-autofill,in
 		justify-items:flex-end;
 		align-items:center;
 		justify-content:flex-end;
-		margin-top:calc(var(--global-space) * 2)
 }
 	.terminal-menu li{
 		margin:0;
