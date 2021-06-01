@@ -6,7 +6,7 @@ html{
   --mono-font-stack: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
   --background-color: #222225;
   --page-width: 60em;
-  --font-color: #e8e9ed;
+  --font-color: white;
   --invert-font-color: #222225;
   --secondary-color: #a3abba;
   --tertiary-color: #a3abba;
@@ -29,7 +29,7 @@ html[data-theme='light'] {
   --background-color: #ffffff;
   --page-width: 60em;
   --font-color: #222225;
-  --invert-font-color: #e8e9ed;
+  --invert-font-color: white;
   --secondary-color: #a3abba;
   --tertiary-color: #a3abba;
   --primary-color: #62c4ff;

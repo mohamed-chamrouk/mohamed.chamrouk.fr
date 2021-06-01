@@ -22,53 +22,41 @@
 
 
   {% block head %}{% endblock %}
-  <script type="text/javascript">
+  <script src="/static/js/theme.js"></script>
+</head>
+<body>
+  <button onclick="topFunction()" id="myBtn" title="Go to top">&#x21d1;</button>
+  <script>
   function snackFunction(id) {
     // Get the snackbar DIV
     var x = document.getElementById(id);
-
+    
     // Add the "show" class to DIV
     x.className = "show";
 
     // After 3 seconds, remove the show class from DIV
     setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
   }
+  //Get the button:
+  mybutton = document.getElementById("myBtn");
 
-  const htmlEl = document.getElementsByTagName('html')[0];
+  // When the user scrolls down 20px from the top of the document, show the button
+  window.onscroll = function() {scrollFunction()};
 
-  const toggleTheme = (theme) => {
-    htmlEl.dataset.theme = theme;
-  }
-
-  if (document.cookie.split(';').some(function(item) {
-    return item.trim().indexOf('theme=') == 0
-  })) {
-    if (document.cookie.split(';').some(function(item) {
-      return item.indexOf('theme=light') >= 0
-    })) {
-      toggleTheme('light');
+  function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+      mybutton.style.display = "block";
     } else {
-      toggleTheme('dark');
+      mybutton.style.display = "none";
     }
   }
 
-  function changeTheme() {
-    var checkbox = document.getElementById("darkSwitch");
-
-    if (checkbox.checked == true){
-      toggleTheme('light');
-      document.cookie = "theme=light";
-    } else {
-      toggleTheme('dark');
-      document.cookie = "theme=dark";
-    }
+  // When the user clicks on the button, scroll to the top of the document
+  function topFunction() {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }
-  $(document).on("click", ".action-buttons .dropdown-menu", function(e){
-    e.stopPropagation();
-  });
   </script>
-</head>
-<body>
   <div id="snackbar"> L'identification a réussi !</div>
   <div id="snackbar-error"> L'identification a échoué !</div>
   <div class="wrapper">
@@ -96,7 +84,7 @@
             </a>
           </div>
           <div id="menu-button" style="float: right; padding-top: 34px; width: 30px; ">
-            <img height="30" style="width:auto; margin-left: auto; margin-right: auto" id="img_menu" src="/static/media/menu.png" onclick="showMenu()"/>
+            <img height="30" style="width:auto; margin-left: auto; margin-right: auto" id="img_menu" src="/static/media/menu.svg" onclick="showMenu()"/>
           </div>
           <script>
           function showMenu() {
@@ -166,7 +154,7 @@
               </li>
               {% if current_user.is_authenticated %}
               <link href="/static/css/color_picker.css" rel="stylesheet">
-            <script src="/static/js/color_picker.js"></script>
+              <script src="/static/js/color_picker.js"></script>
               <li>
                 <input id="colorInput" class="colorpicker-custom">
                 <div style="width: 10px;"></div>
@@ -229,10 +217,10 @@
 </body>
 <script type="text/javascript">
 if (document.cookie.split(';').some(function(item) {
-  return item.trim().indexOf('theme=') == 0
+  return item.trim().lastIndexOf('theme=') == 0
 })) {
   if (document.cookie.split(';').some(function(item) {
-    return item.indexOf('theme=light') >= 0
+    return item.lastIndexOf('theme=light') >= 0
   })) {
     var checkbox = document.getElementById("darkSwitch");
     checkbox.setAttribute("checked", "true");

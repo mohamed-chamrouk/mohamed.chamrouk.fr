@@ -1,5 +1,5 @@
 from sqlalchemy import create_engine
-from mohamed_chamrouk_fr import app, cache
+from mohamed_chamrouk_fr import app
 
 
 def create_connection():
