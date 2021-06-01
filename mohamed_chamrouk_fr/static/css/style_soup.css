@@ -182,3 +182,23 @@ figure {
 figure img {
   height: auto;
 }
+
+#myBtn {
+  display: none; /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px; /* Place the button at the bottom of the page */
+  right: 30px; /* Place the button 30px from the right */
+  z-index: 99; /* Make sure it does not overlap */
+  border: none; /* Remove borders */
+  outline: none; /* Remove outline */
+  background-color: var(--primary-color); /* Set a background color */
+  color: var(--background-color); /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 7px; /* Some padding */
+  font-size: 30px; /* Increase font size */
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+#myBtn:hover {
+  background-color: var(--secondary-color); /* Add a dark-grey background on hover */
+}

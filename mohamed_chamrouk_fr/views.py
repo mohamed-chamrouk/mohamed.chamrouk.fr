@@ -55,13 +55,12 @@ def parseVisitor(data):
     update_or_create_page(conn, data)
 
 
-@app.before_request
 def getAnalyticsData():
     global userOS, userBrowser, userIP, userContinent, userCity, userCountry, sessionID
     userInfo = httpagentparser.detect(request.headers.get('User-Agent'))
     userOS = userInfo['platform']['name']
     userBrowser = userInfo['browser']['name']
-    userIP = request.remote_addr
+    userIP = '157.159.42.21' if request.remote_addr == '127.0.0.1' else request.remote_addr
     api = "https://www.iplocate.io/api/lookup/" + userIP
     try:
         resp = urllib.request.urlopen(api)
@@ -144,11 +143,13 @@ def get_num_cities():
 
 @app.route("/portfolio/")
 def portfolio():
+    getAnalyticsData()
     return render_template('portfolio.html')
 
 
 @app.route("/")
 def home():
+    getAnalyticsData()
     with conn.connect() as connection:
         posts = connection.execute(
             'SELECT p.id, title, body, created, hide, author_id, username, u.name'
@@ -177,10 +178,10 @@ def home():
 @app.route("/dashboard")
 @login_required
 def dashboard():
+    getAnalyticsData()
     dates, values_d = get_num_sessions()
     countries, values_co = get_num_countries()
     cities, values_ci = get_num_cities()
-    app.logger.info("\n dates : "+str(dates)+"\n countries : "+str(countries)+"\n cities : "+str(cities))
     return render_template('dashboard/dashboard.html', get_all_sessions=
                            get_all_sessions, len=len, min=min,
                            dates=dates[max(0, len(dates)-7):],
