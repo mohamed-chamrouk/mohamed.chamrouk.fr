@@ -20,11 +20,25 @@ Recensement des dernières activitées monitorées sur le site.
 <div class="wrapper-dashboard">
   <div class="to-border" style="grid-area: one">
     <div style="text-align: center">Informations détaillées sur le traffic</div>
-    <div class="info-table">
-      <table class="table-info" style="table-layout:fixed; width:100%; height: 100%;">
+    <div style="padding-right:12px">
+      <table class="table-info" style="table-layout:fixed; width: 100%; margin-bottom: 0px;">
         <thead>
           <tr>
-            <th style="width:21%">@IP</th>
+            <th style="width:22%">@IP</th>
+            <th style="width: auto">Pays</th>
+            <th>Ville</th>
+            <th>OS</th>
+            <th>Navigateur</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="info-table">
+      <table class="table-info" style="table-layout:fixed; width:100%; height: 100%; margin-top:0px;">
+        <thead style="visibility: collapse">
+          <tr>
+            <th style="width:22%">@IP</th>
             <th style="width: auto">Pays</th>
             <th>Ville</th>
             <th>OS</th>
@@ -52,11 +66,11 @@ Recensement des dernières activitées monitorées sur le site.
   </div>
   <div class="canva2 to-border" style="height: 100%; width: 100%;">
     <div style="text-align: center">Pays visiteurs</div>
-      <canvas id="myPieChartCountries"></canvas>
+    <canvas id="myPieChartCountries"></canvas>
   </div>
   <div class="canva3 to-border" style="height: 100%; width: 100%;">
     <div style="text-align: center">Villes visiteuses</div>
-      <canvas id="myPieChartCities"></canvas>
+    <canvas id="myPieChartCities"></canvas>
   </div>
 </div>
 
