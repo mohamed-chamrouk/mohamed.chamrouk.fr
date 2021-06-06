@@ -121,23 +121,31 @@ def get_num_sessions():
     return dates, values
 
 
-def get_num_countries():
+def get_num_countries(limit):
     countries = []
     values = []
     dbRows = select_num_countries(conn)
-    for row in dbRows:
+    dbRowsReduc = dbRows[len(dbRows)-limit:] if limit > 0 and limit < len(dbRows) else dbRows
+    for row in dbRowsReduc:
         countries.append(str(row['country']))
         values.append(row['count'])
+    if limit > 0 and limit < len(dbRows):
+        countries.insert(0, 'others')
+        values.insert(0, sum(item['count'] for item in dbRows[:len(dbRows)-limit]))
     return countries, values
 
 
-def get_num_cities():
+def get_num_cities(limit):
     cities = []
     values = []
     dbRows = select_num_cities(conn)
-    for row in dbRows:
+    dbRowsReduc = dbRows[len(dbRows)-limit:] if limit > 0 and limit < len(dbRows) else dbRows
+    for row in dbRowsReduc:
         cities.append(str(row['city']))
         values.append(row['count'])
+    if limit > 0 and limit < len(dbRows):
+        cities.insert(0, 'others')
+        values.insert(0, sum(item['count'] for item in dbRows[:len(dbRows)-limit]))
     return cities, values
 
 
@@ -180,8 +188,8 @@ def home():
 def dashboard():
     getAnalyticsData()
     dates, values_d = get_num_sessions()
-    countries, values_co = get_num_countries()
-    cities, values_ci = get_num_cities()
+    countries, values_co = get_num_countries(8)
+    cities, values_ci = get_num_cities(12)
     return render_template('dashboard/dashboard.html', get_all_sessions=
                            get_all_sessions, len=len, min=min,
                            dates=dates[max(0, len(dates)-7):],
