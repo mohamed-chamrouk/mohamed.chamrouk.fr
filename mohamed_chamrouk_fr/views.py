@@ -33,7 +33,7 @@ sessionID = None
 
 @cache.cached(timeout=3600, key_prefix='all_comments')
 def get_git_log(branch):
-    g = git.Git("$HOME/mohamed_chamrouk_fr")
+    g = git.Git("/home/mohamed_chamrouk_fr")
     sha = g.log('--pretty=format:%h')
     message = g.log('--pretty=format:%B')
     author = g.log('--pretty=format:%aN')
