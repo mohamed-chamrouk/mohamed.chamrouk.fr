@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block head_before %}
+<link rel="stylesheet"
+      href="/static/css/default.min.css">
+<script src="/static/css/highlight.min.js"></script>
+<script>hljs.highlightAll();</script>
+{% endblock %}
+
 {% block content %}
 <div class="wrapper-inside">
 

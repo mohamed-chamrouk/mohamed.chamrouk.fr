@@ -14,19 +14,6 @@ def create_table(c, sql):
     c.execute(sql)
 
 
-"""def update_or_create_page(c, data):
-    sql = "SELECT * FROM public.pages where name=%s and session=%s"
-    connection = c.raw_connection().cursor()
-    connection.execute(sql, data[:-1])
-    result = connection.fetchone()
-    if result is None:
-        create_pages(c, data)
-    else:
-        print(result)
-        update_pages(c, result['id'])
-    connection.close()"""
-
-
 def update_or_create_page(c, data):
     sql = "SELECT * FROM public.pages where name=%s and session=%s"
     with c.connect() as connection:
@@ -80,6 +67,36 @@ def select_all_user_visits(c, session_id):
     sql = "SELECT * FROM public.pages where session =%s"
     with c.connect() as connection:
         rows = connection.execute(sql, [session_id]).fetchall()
+        return rows
+
+
+def select_num_sessions(c):
+    sql = '''SELECT t.created_at::date, count(t.created_at::date)
+FROM public.sessions t
+GROUP BY t.created_at::date
+ORDER BY t.created_at::date'''
+    with c.connect() as connection:
+        rows = connection.execute(sql).fetchall()
+        return rows
+
+
+def select_num_countries(c):
+    sql = '''SELECT t.country, count(t.country)
+FROM public.sessions t
+GROUP BY country
+ORDER BY count'''
+    with c.connect() as connection:
+        rows = connection.execute(sql).fetchall()
+        return rows
+
+
+def select_num_cities(c):
+    sql = '''SELECT t.city, count(t.city)
+FROM public.sessions t
+GROUP BY city
+ORDER BY count'''
+    with c.connect() as connection:
+        rows = connection.execute(sql).fetchall()
         return rows
 
 

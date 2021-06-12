@@ -17,10 +17,14 @@ from datetime import datetime
 from mohamed_chamrouk_fr import app, conn, cache
 from mohamed_chamrouk_fr.auth import auth
 from mohamed_chamrouk_fr.blog import blog
+from mohamed_chamrouk_fr.projects import proj
+from mohamed_chamrouk_fr.project_spotify import spot
 
 
 app.register_blueprint(auth)
 app.register_blueprint(blog)
+app.register_blueprint(spot)
+app.register_blueprint(proj)
 
 userOS = None
 userIP = None
@@ -33,7 +37,7 @@ sessionID = None
 
 @cache.cached(timeout=3600, key_prefix='all_comments')
 def get_git_log(branch):
-    g = git.Git("/home/mohamed_chamrouk_fr")
+    g = git.Git("$HOME/mohamed_chamrouk_fr")
     sha = g.log('--pretty=format:%h')
     message = g.log('--pretty=format:%B')
     author = g.log('--pretty=format:%aN')
@@ -183,7 +187,7 @@ def home():
                            length=len(git_log)+1)
 
 
-@app.route("/dashboard")
+@app.route("/dashboard/")
 @login_required
 def dashboard():
     getAnalyticsData()

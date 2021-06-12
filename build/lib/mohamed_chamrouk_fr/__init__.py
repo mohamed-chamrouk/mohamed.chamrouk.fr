@@ -1,11 +1,14 @@
 from flask import Flask
+from flask_caching import Cache
+import config
+from sqlalchemy import create_engine
+
 app = Flask(__name__)
 
-import config
 app.config.from_object(config.Config)
 
-from sqlalchemy import create_engine
+cache = Cache(app)
+
 conn = create_engine(str(app.config['SQLALCHEMY_DATABASE_URI']))
-c = conn
 
 import mohamed_chamrouk_fr.views
