@@ -9,7 +9,7 @@
   <title>
     Mohamed Chamrouk
   </title>
-
+  {% block head_before %}{% endblock %}
   <link rel="stylesheet" href="/static/css/terminal.css" />
   <link rel="stylesheet" type="text/css" href="/static/css/style_soup.css">
   <link rel="stylesheet" type="text/css" href="/static/css/switch.css">
@@ -30,7 +30,7 @@
   function snackFunction(id) {
     // Get the snackbar DIV
     var x = document.getElementById(id);
-    
+
     // Add the "show" class to DIV
     x.className = "show";
 
@@ -139,6 +139,7 @@
                 {% endif %}
 
               </li>
+              <li><a class="menu-item" href="/projects/">Projets</a></li>
               <li><a class="menu-item" href="/portfolio/">Portfolio</a></li>
               <li><a class="menu-item" href="/static/media/CV-Chamrouk-Mohamed.pdf">CV</a></li>
               <li>

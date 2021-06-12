@@ -160,6 +160,14 @@ body {
     "three four";
   }
 
+  .wrapper-projects {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 3fr 2fr;
+    grid-template-areas:
+    "first second third"
+  }
+
   .wrapper-inside {
     display: grid;
     grid-gap: 10px;

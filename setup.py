@@ -16,5 +16,10 @@ setup(
         , 'gitpython'
         , 'uwsgi'
         , 'Flask-Caching'
+        , 'spotipy'
+        , 'Flask-session'
+        , 'testresources'
+        , 'requests'
+        , 'threading'
     ],
 )
