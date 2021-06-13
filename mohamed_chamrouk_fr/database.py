@@ -14,6 +14,9 @@ def create_table(c, sql):
     c.execute(sql)
 
 
+# ---------- Pages related functions ---------- #
+
+
 def update_or_create_page(c, data):
     sql = "SELECT * FROM public.pages where name=%s and session=%s"
     with c.connect() as connection:
@@ -26,7 +29,6 @@ def update_or_create_page(c, data):
 
 
 def create_pages(c, data):
-    print(data)
     sql = ''' INSERT INTO public.pages(name,session,first_visited)
               VALUES (%s,%s,%s) '''
     with c.connect() as connection:
@@ -34,12 +36,28 @@ def create_pages(c, data):
 
 
 def update_pages(c, pageId):
-    print(pageId)
     sql = ''' UPDATE public.pages
               SET visits = visits+1
               WHERE id = %s'''
     with c.connect() as connection:
         connection.execute(sql, [pageId])
+
+
+def select_all_pages(c):
+    sql = "SELECT * FROM public.pages"
+    with c.connect() as connection:
+        rows = connection.execute(sql).fetchall()
+        return rows
+
+
+# ---------- Sessions related functions ---------- #
+
+
+def select_all_user_visits(c, session_id):
+    sql = "SELECT * FROM public.pages where session =%s"
+    with c.connect() as connection:
+        rows = connection.execute(sql, [session_id]).fetchall()
+        return rows
 
 
 def create_session(c, data):
@@ -53,20 +71,6 @@ def select_all_sessions(c):
     sql = "SELECT * FROM public.sessions"
     with c.connect() as connection:
         rows = connection.execute(sql).fetchall()
-        return rows
-
-
-def select_all_pages(c):
-    sql = "SELECT * FROM public.pages"
-    with c.connect() as connection:
-        rows = connection.execute(sql).fetchall()
-        return rows
-
-
-def select_all_user_visits(c, session_id):
-    sql = "SELECT * FROM public.pages where session =%s"
-    with c.connect() as connection:
-        rows = connection.execute(sql, [session_id]).fetchall()
         return rows
 
 

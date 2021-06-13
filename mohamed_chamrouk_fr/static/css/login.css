@@ -11,12 +11,10 @@
 
 #inputs {
   text-align: center;
-}
-
-fieldset {
   border-style: none;
   background-color: var(--background-color)
 }
+
 
 .padding-class {
   padding-bottom: 10px;
