@@ -1,0 +1,53 @@
+{% extends 'base_backend.html' %}
+
+{% block head %}
+<script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+{% endblock %}
+
+{% block aside %}
+<h1 style="padding: 0px">
+  <a>
+    Edition de "{{project['title']}}"
+  </a>
+</h1>
+{% endblock %}
+
+
+
+{% block content %}
+  <form method="POST">
+    <fieldset>
+      <legend>Projet</legend>
+      <div class="form-group">
+        <label for="title">Titre :</label>
+        <input id="title" name="title" type="text" value="request.form['title']">
+      </div>
+      <div class="form-group">
+        <label for="source">Source :</label>
+        <input id="source" name="source" type="text" value="request.form['source']">
+      </div>
+      <div class="form-group">
+        <label for="idPorject">id du projet : </label>
+        <input id="idProject" name="idProject" type="text" value="request.form['idproject']">
+      </div>
+      <div class="grow-wrap">
+        <label for="body-text">Description :</label>
+        <textarea name="body" id="body-text" onInput="this.parentNode.dataset.replicatedValue = this.value">{{ request.form['body'] or project['body']}}</textarea>
+      </div>
+      <input class="dropbtn-invert" type="submit" value="Sauvegarder">
+    </fieldset>
+  </form>
+  <div style="display: flex; margin-left: 2px; margin-top: 15px; ">
+    <form action="{{ url_for('projects.delete', id=project['id']) }}" method="post">
+      <input class="dropbtn-invert-danger" type="submit" value="Supprimer" onclick="return confirm('Are you sure?');">
+    </form>
+
+    <form action="/projects">
+      <div style="padding-left: 20px;">
+        <input class="dropbtn-invert" type="submit" style="left:20px; background: var(--secondary-color);" value="Annuler">
+      </div>
+    </form>
+<script>
+  autosize(document.getElementById("body-text"));
+</script>
+{% endblock %}

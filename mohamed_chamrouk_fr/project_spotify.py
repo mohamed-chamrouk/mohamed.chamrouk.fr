@@ -1,6 +1,6 @@
 import threading
 import mohamed_chamrouk_fr.startup as startup
-import mohamed_chamrouk_fr.spotify_threading as spotify_thread
+from mohamed_chamrouk_fr.spotify_threading import spotify_thread
 from flask import redirect, Blueprint, request, render_template
 from flask_login import login_required
 

@@ -127,6 +127,10 @@ body {
     display: none;
   }
 
+  .wrapper-projects .to-margin {
+    padding-bottom: 10px;
+  }
+
   #menu-button {
     display: inline-block;
   }
@@ -163,9 +167,9 @@ body {
   .wrapper-projects {
     display: grid;
     grid-gap: 10px;
-    grid-template-columns: 1fr 3fr 2fr;
     grid-template-areas:
-    "first second third"
+    "second"
+    "third"
   }
 
   .wrapper-inside {

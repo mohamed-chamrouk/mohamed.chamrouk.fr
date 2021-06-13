@@ -6,16 +6,34 @@
 
 
 {% block content %}
-
-<div style="width:100%; border: 1px solid var(--secondary-color); padding: 10px">
-  <div class="wrapper-projects">
-    <img style="grid-area: first" src="//upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/1024px-Spotify_logo_without_text.svg.png">
-    <p style="grid-area: second; padding: 10px">Application permettant de suivre des statistiques d'un utilisateur Spotify sur le long terme. Permet par exemple de récupérer les titres les plus joués, combien de fois ils ont été joués etc...</p>
-    <div style="grid-area: third; padding: 10px">
-      <a><img src="//upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg">GitHub</a>
-      <p>&#187; <a>Lancer</a></p>
+{% if current_user.is_authenticated %}
+<p >&raquo; <a class="action" href="{{ url_for('projects.create') }}">Nouveau projet</a></p>
+{% endif %}
+{% for project in projects %}
+<form style="padding-bottom: 15px">
+  <fieldset>
+    <legend style="font-size: 17px"> <img style=" max-width: 17px; vertical-align: middle; margin: 3px; padding-bottom: 2px" src="/static/media/projects/{{project['idproject']}}.png">{{project['title']}}</legend>
+    <div style="width:100%;">
+      <div class="wrapper-projects">
+        <p class="to-margin"  style="grid-area: second; margin-bottom: 0px">{{project['body']}}</p>
+        <div style="grid-area: third; text-align: right">
+          <div style="padding-right: 10px; display: inline-block">
+            <a href="{{project['source']}}">
+              <input type="button" class="btn btn-default" value="Source" </input>
+            </a>
+          </div>
+          <a href="/projects/{{project['idproject']}}_auth">
+            <input type="button" class="btn btn-primary" value="Lancer" </input>
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
+  </fieldset>
+</form>
+{% if current_user.is_authenticated %}
+<div style="margin-bottom: 15px; margin-left: 2px">
+<a class="dropbtn-invert"  href="{{ url_for('projects.update', id=project['id']) }}">Editer</a>
 </div>
-
+{% endif %}
+{% endfor %}
 {% endblock %}
