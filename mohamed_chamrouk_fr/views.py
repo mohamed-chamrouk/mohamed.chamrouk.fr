@@ -10,7 +10,7 @@ from mohamed_chamrouk_fr.database import (create_session,
                                           select_num_sessions,
                                           select_num_countries,
                                           select_num_cities)
-from flask_login import login_required
+from flask_login import login_required, current_user
 from flask import (render_template, session, request)
 from markdown import markdown
 from datetime import datetime
@@ -169,6 +169,9 @@ def home():
             ' ORDER BY created DESC').fetchall()
     total_page = math.ceil(len(posts)/5)
     page = request.args.get("page")
+
+    if not current_user.is_authenticated:
+        posts = posts[not posts['hide']]
 
     if page:
         if int(page) > total_page:

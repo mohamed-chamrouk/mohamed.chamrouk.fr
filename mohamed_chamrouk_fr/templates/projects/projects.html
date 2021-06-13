@@ -22,9 +22,11 @@
               <input type="button" class="btn btn-default" value="Source" </input>
             </a>
           </div>
+          {% if current_user.is_authenticated %}
           <a href="/projects/{{project['idproject']}}_auth">
             <input type="button" class="btn btn-primary" value="Lancer" </input>
           </a>
+          {% endif %}
         </div>
       </div>
     </div>
