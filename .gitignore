@@ -2,3 +2,5 @@ venv/
 config.py
 __pycache__/
 mohamed_chamrouk_fr/__pycache__/
+delete.sh
+__pycache__/
