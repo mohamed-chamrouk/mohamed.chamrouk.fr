@@ -127,6 +127,11 @@ body {
     display: none;
   }
 
+  .form-buttons {
+    display: flex;
+    flex-direction: column;
+  }
+
   .wrapper-projects .to-margin {
     padding-bottom: 10px;
   }
@@ -162,6 +167,21 @@ body {
     grid-template-areas:
     "one two"
     "three four";
+  }
+
+  .wrapper-spotify {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas:
+    "one two"
+  }
+
+  .wrapper-spotify-inside {
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "one two";
   }
 
   .wrapper-projects {
