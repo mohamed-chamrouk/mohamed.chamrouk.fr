@@ -3,6 +3,11 @@ mohamed_chamrouk_fr/__init__.py
 mohamed_chamrouk_fr/auth.py
 mohamed_chamrouk_fr/blog.py
 mohamed_chamrouk_fr/database.py
+mohamed_chamrouk_fr/flask_spotify_auth.py
+mohamed_chamrouk_fr/project_spotify.py
+mohamed_chamrouk_fr/projects.py
+mohamed_chamrouk_fr/spotify_threading.py
+mohamed_chamrouk_fr/startup.py
 mohamed_chamrouk_fr/views.py
 mohamed_chamrouk_fr.egg-info/PKG-INFO
 mohamed_chamrouk_fr.egg-info/SOURCES.txt
