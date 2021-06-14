@@ -19,7 +19,7 @@ CLIENT_SECRET = app.config['CLIENT_SECRET']
 
 #Port and callback url can be changed or ledt to localhost:5000
 PORT = "5000"
-CALLBACK_URL = "https://mohamed.chamrouk.fr"
+CALLBACK_URL = "http://127.0.0.1"
 CALLBACK = "projects/spotify_callback"
 
 #Add needed scope from spotify user
@@ -29,13 +29,13 @@ TOKEN_DATA = []
 
 
 def getUser():
-    return getAuth(CLIENT_ID, f"{CALLBACK_URL}/{CALLBACK}/", SCOPE)
+    return getAuth(CLIENT_ID, f"{CALLBACK_URL}:{PORT}/{CALLBACK}/", SCOPE)
 
 
 def getUserToken(code):
     global TOKEN_DATA
     TOKEN_DATA = getToken(code, CLIENT_ID, CLIENT_SECRET,
-                          f"{CALLBACK_URL}/{CALLBACK}/")
+                          f"{CALLBACK_URL}:{PORT}/{CALLBACK}/")
 
 
 def refreshToken(tim):
@@ -55,6 +55,7 @@ def refreshStat():
     params = {'limit': 50}
     headers = {"Authorization": f"Bearer {TOKEN_DATA[1]}"}
     resp = requests.get(url, params=params, headers=headers).json()['items']
+    app.logger.info(f"WOOHOO")
     for track in resp:
         played_at = track['played_at']
         title = track['track']['name']
@@ -68,4 +69,4 @@ def refreshStat():
                 '  ON CONFLICT DO NOTHING',
                 played_at, title, artist, url_track
             )
-    app.logger.info(f"Updated {counter} records.")
+        app.logger.info(f"Updated {counter} records.")

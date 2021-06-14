@@ -18,6 +18,7 @@ def projects():
 @login_required
 def create():
     if request.method == 'POST':
+        app.logger.info(request)
         title = request.form['title']
         body = request.form['body']
         source = request.form['source']

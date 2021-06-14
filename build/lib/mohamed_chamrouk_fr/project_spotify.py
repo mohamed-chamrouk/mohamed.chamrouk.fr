@@ -20,6 +20,7 @@ USER_RECENTLY_PLAYED_ENDPOINT = "{}/{}/{}".format(USER_PROFILE_ENDPOINT,
                                                   'player', 'recently-played')
 BROWSE_FEATURED_PLAYLISTS = "{}/{}/{}".format(SPOTIFY_API_URL, 'browse',
                                               'featured-playlists')
+
 RECENTLY_PLAYED = ""
 TOP_ARTISTS_SHORT = ""
 TOP_ARTISTS_MEDIUM = ""
@@ -27,8 +28,7 @@ TOP_ARTISTS_LONG = ""
 TOP_TRACKS_SHORT = ""
 TOP_TRACKS_MEDIUM = ""
 TOP_TRACKS_LONG = ""
-TOP_ARTISTS = ""
-TOP_TRACKS = ""
+
 
 spot = Blueprint('project_spotify', __name__)
 
@@ -62,20 +62,14 @@ def callback():
                    'short_term': TOP_ARTISTS_SHORT}
     TOP_TRACKS = {'long_term': TOP_TRACKS_LONG, 'medium_term': TOP_TRACKS_MEDIUM,
                   'short_term': TOP_TRACKS_SHORT}
-    app.logger.info(f"All the threads are listed below : {[thread.name for thread in threading.enumerate()]}")
     return redirect(url_for('project_spotify.spotify'))
 
 
 @spot.route("/projects/spotify/", methods=["POST", "GET"])
 @login_required
 def spotify():
-    TOP_ARTISTS = {'long_term': TOP_ARTISTS_LONG, 'medium_term': TOP_ARTISTS_MEDIUM,
-                       'short_term': TOP_ARTISTS_SHORT}
-    TOP_TRACKS = {'long_term': TOP_TRACKS_LONG, 'medium_term': TOP_TRACKS_MEDIUM,
-                      'short_term': TOP_TRACKS_SHORT}
     if request.method == 'POST':
         dict = {'Court': 'short_term', 'Moyen': 'medium_term', 'Long': 'long_term'}
-        app.logger.info(TOP_ARTISTS[getcookie()])
         res = make_response(render_template('projects/spotify/spotify.html',
                             tartists=TOP_ARTISTS[getcookie() if request.form.get('term') is None else dict[request.form.get('term')]]['items'],
                             ttracks=TOP_TRACKS[getcookie() if request.form.get('term') is None else dict[request.form.get('term')]]['items'],
@@ -91,7 +85,7 @@ def spotify():
         except:
             app.logger.error("No cookie cat found.")
         return res, 302
-
+        
     if TOP_ARTISTS_LONG == "":
         return redirect(url_for('project_spotify.auth'))
     if getcatcookie() == "Artistes":
@@ -106,11 +100,11 @@ def spotify():
 
 
 def getcookie():
-    return ('long_term' if request.cookies.get('time_range') is None else request.cookies.get('time_range'))
+    return 'long_term' if request.cookies.get('time_range') is None else request.cookies.get('time_range')
 
 
 def getcatcookie():
-    return ('Musiques' if request.cookies.get('category') is None else request.cookies.get('category'))
+    return 'Musiques' if request.cookies.get('category') is None else request.cookies.get('category')
 
 
 def get_users_top(auth_header, t, time_range):

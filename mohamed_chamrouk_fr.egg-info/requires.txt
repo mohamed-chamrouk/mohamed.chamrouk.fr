@@ -1,5 +1,4 @@
 Flask-Caching
-Flask-session
 flask
 flask_login
 flask_migrate
@@ -9,7 +8,5 @@ httpagentparser
 markdown
 psycopg2-binary
 requests
-spotipy
-testresources
 uwsgi
 werkzeug
