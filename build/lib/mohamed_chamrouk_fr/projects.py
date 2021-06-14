@@ -18,6 +18,10 @@ def projects():
 @login_required
 def create():
     if request.method == 'POST':
+<<<<<<< HEAD
+=======
+        app.logger.info(request)
+>>>>>>> c579dd12af47240e093ab15bab8c6544936244cb
         title = request.form['title']
         body = request.form['body']
         source = request.form['source']

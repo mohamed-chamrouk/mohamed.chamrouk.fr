@@ -55,6 +55,10 @@ def refreshStat():
     params = {'limit': 50}
     headers = {"Authorization": f"Bearer {TOKEN_DATA[1]}"}
     resp = requests.get(url, params=params, headers=headers).json()['items']
+<<<<<<< HEAD
+=======
+    app.logger.info(f"WOOHOO")
+>>>>>>> c579dd12af47240e093ab15bab8c6544936244cb
     for track in resp:
         played_at = track['played_at']
         title = track['track']['name']
