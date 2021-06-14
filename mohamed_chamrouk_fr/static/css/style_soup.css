@@ -132,6 +132,10 @@ body {
     flex-direction: column;
   }
 
+  .form-buttons input {
+   margin-bottom: 2px;
+  }
+
   .wrapper-projects .to-margin {
     padding-bottom: 10px;
   }
@@ -142,6 +146,14 @@ body {
 
   .terminal-nav{
 		flex-direction:column;
+  }
+
+  .to-widen {
+    width: 100%;
+  }
+
+  .to-widen-div {
+    padding-right: 0px !important;
   }
 }
 

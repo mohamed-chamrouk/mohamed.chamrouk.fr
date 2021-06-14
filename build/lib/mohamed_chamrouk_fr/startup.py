@@ -68,4 +68,4 @@ def refreshStat():
                 '  ON CONFLICT DO NOTHING',
                 played_at, title, artist, url_track
             )
-    app.logger.info(f"Updated {counter} records.")
+        app.logger.info(f"Updated {counter} records.")
