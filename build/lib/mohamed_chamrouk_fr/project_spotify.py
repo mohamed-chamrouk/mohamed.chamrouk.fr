@@ -1,10 +1,8 @@
 import threading
 import requests
-import json
 import mohamed_chamrouk_fr.startup as startup
 from mohamed_chamrouk_fr import app, conn
 from mohamed_chamrouk_fr.spotify_threading import spotify_thread
-import mohamed_chamrouk_fr.spotify_threading as spotify_threading
 from flask import (redirect, Blueprint, request, render_template, url_for,
                    make_response)
 from flask_login import login_required
@@ -23,6 +21,15 @@ USER_RECENTLY_PLAYED_ENDPOINT = "{}/{}/{}".format(USER_PROFILE_ENDPOINT,
 BROWSE_FEATURED_PLAYLISTS = "{}/{}/{}".format(SPOTIFY_API_URL, 'browse',
                                               'featured-playlists')
 
+RECENTLY_PLAYED = ""
+TOP_ARTISTS_SHORT = ""
+TOP_ARTISTS_MEDIUM = ""
+TOP_ARTISTS_LONG = ""
+TOP_TRACKS_SHORT = ""
+TOP_TRACKS_MEDIUM = ""
+TOP_TRACKS_LONG = ""
+
+
 spot = Blueprint('project_spotify', __name__)
 
 
@@ -39,29 +46,22 @@ def callback():
     startup.getUserToken(request.args.get('code'))
     if "Thread-spotify" not in [thread.name for thread in threading.enumerate()]:
         app.logger.info("Creating new thread for refreshing spotify token and user stats.")
-        sp_t = spotify_thread(2500, "Thread-spotify")
+        sp_t = spotify_thread(3500, "Thread-spotify")
         sp_t.start()
 
-    if "Thread-spotify" in [thread.name for thread in threading.enumerate()] and spotify_threading.stop_threads:
-        spotify_threading.stop_threads = False
-
-    list_time_range = ['short_term', 'medium_term', 'long_term']
-    list_type = ['artists', 'tracks']
-    dict_index = {'short_term_artists' : 1, 'medium_term_artists' : 2,'long_term_artists' : 3,
-                  'short_term_tracks' : 4, 'medium_term_tracks' : 5, 'long_term_tracks' : 6}
-
-    for type in list_type:
-        for time_range in list_time_range:
-            set_analytics_data(dict_index[f"{time_range}_{type}"],
-                               json.dumps(json.loads(get_users_top(
-                                startup.getAccessToken()[1],
-                                type,
-                                time_range,))),
-                               time_range,
-                               type)
-
-    app.logger.info(f"All the threads are listed below : {[thread.name for thread in threading.enumerate()]}")
-
+        #sp_stat_t = spotify_thread(5000, "Thread-stat-spotify")
+        #sp_stat_t.start()
+    global TOP_ARTISTS, TOP_TRACKS, RECENTLY_PLAYED, TOP_TRACKS_SHORT, TOP_TRACKS_MEDIUM, TOP_TRACKS_LONG, TOP_ARTISTS_SHORT, TOP_ARTISTS_MEDIUM, TOP_ARTISTS_LONG
+    TOP_ARTISTS_SHORT = get_users_top(startup.getAccessToken()[1], 'artists', 'short_term')
+    TOP_ARTISTS_MEDIUM = get_users_top(startup.getAccessToken()[1], 'artists', 'medium_term')
+    TOP_ARTISTS_LONG = get_users_top(startup.getAccessToken()[1], 'artists', 'long_term')
+    TOP_TRACKS_SHORT = get_users_top(startup.getAccessToken()[1], 'tracks', 'short_term')
+    TOP_TRACKS_MEDIUM = get_users_top(startup.getAccessToken()[1], 'tracks', 'medium_term')
+    TOP_TRACKS_LONG = get_users_top(startup.getAccessToken()[1], 'tracks', 'long_term')
+    TOP_ARTISTS = {'long_term': TOP_ARTISTS_LONG, 'medium_term': TOP_ARTISTS_MEDIUM,
+                   'short_term': TOP_ARTISTS_SHORT}
+    TOP_TRACKS = {'long_term': TOP_TRACKS_LONG, 'medium_term': TOP_TRACKS_MEDIUM,
+                  'short_term': TOP_TRACKS_SHORT}
     return redirect(url_for('project_spotify.spotify'))
 
 
@@ -70,10 +70,9 @@ def callback():
 def spotify():
     if request.method == 'POST':
         dict = {'Court': 'short_term', 'Moyen': 'medium_term', 'Long': 'long_term'}
-        term = getcookie() if request.form.get('term') is None else dict[request.form.get('term')]
         res = make_response(render_template('projects/spotify/spotify.html',
-                            tartists=get_analytics_data(term, "artists")['items'],
-                            ttracks=get_analytics_data(term, "tracks")['items'],
+                            tartists=TOP_ARTISTS[getcookie() if request.form.get('term') is None else dict[request.form.get('term')]]['items'],
+                            ttracks=TOP_TRACKS[getcookie() if request.form.get('term') is None else dict[request.form.get('term')]]['items'],
                             talltime=get_top_artists() if request.form.get('cat') == "Artistes" else get_top_tracks(),
                             category=getcatcookie() if request.form.get('cat') is None else request.form.get('cat')))
         try:
@@ -86,33 +85,26 @@ def spotify():
         except:
             app.logger.error("No cookie cat found.")
         return res, 302
-
+        
+    if TOP_ARTISTS_LONG == "":
+        return redirect(url_for('project_spotify.auth'))
     if getcatcookie() == "Artistes":
         talltime = get_top_artists()
     else:
         talltime = get_top_tracks()
     return render_template('projects/spotify/spotify.html',
-                           tartists=get_analytics_data(getcookie(), "artists")['items'],
-                           ttracks=get_analytics_data(getcookie(), "tracks")['items'],
+                           tartists=TOP_ARTISTS[getcookie()]['items'],
+                           ttracks=TOP_TRACKS[getcookie()]['items'],
                            talltime=talltime,
                            category=getcatcookie())
 
 
-@spot.route("/projects/spotify_kill/")
-@login_required
-def kill():
-    for thread in threading.enumerate():
-        if thread.name == "Thread-spotify":
-            spotify_threading.stop_threads = True
-    return redirect(url_for('projects.projects'))
-
-
 def getcookie():
-    return ('long_term' if request.cookies.get('time_range') is None else request.cookies.get('time_range'))
+    return 'long_term' if request.cookies.get('time_range') is None else request.cookies.get('time_range')
 
 
 def getcatcookie():
-    return ('Musiques' if request.cookies.get('category') is None else request.cookies.get('category'))
+    return 'Musiques' if request.cookies.get('category') is None else request.cookies.get('category')
 
 
 def get_users_top(auth_header, t, time_range):
@@ -122,7 +114,7 @@ def get_users_top(auth_header, t, time_range):
     params = {'limit': 50, 'time_range': time_range}
     url = f"{USER_TOP_ARTISTS_AND_TRACKS_ENDPOINT}/{t}"
     resp = requests.get(url, headers=auth_header, params=params)
-    return resp.text
+    return resp.json()
 
 
 def get_top_tracks():
@@ -143,7 +135,6 @@ def get_top_tracks():
         })
     return data
 
-
 def get_top_artists():
     with conn.connect() as connection:
         stats = connection.execute(
@@ -159,25 +150,3 @@ def get_top_artists():
         'count': row['count']
         })
     return data
-
-
-def get_analytics_data(time_range, type):
-    with conn.connect() as connection:
-        analy = connection.execute(
-        'SELECT json'
-        ' FROM public.spotify_analytics'
-        '  WHERE time_range = %s AND type = %s',
-        (time_range,type)
-        ).fetchone()
-        r_list = [row for row in analy]
-    return json.loads(r_list[0])
-
-def set_analytics_data(id, json, time_range, type):
-    with conn.connect() as connection:
-        connection.execute(
-        'INSERT INTO spotify_analytics (id, json, time_range, type)'
-        ' VALUES (%s, %s, %s, %s)'
-        '  ON CONFLICT (id) DO UPDATE'
-        '   SET json = EXCLUDED.json, time_range = EXCLUDED.time_range, type = EXCLUDED.type',
-        id, json, time_range, type
-        )

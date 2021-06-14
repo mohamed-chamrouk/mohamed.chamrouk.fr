@@ -1,10 +1,8 @@
 from flask_login import login_required, current_user
-from mohamed_chamrouk_fr import spotify_threading
 from flask import (Blueprint, render_template, request,
                    flash, redirect, url_for, abort)
 from mohamed_chamrouk_fr import conn
 from mohamed_chamrouk_fr import app
-import threading
 
 
 proj = Blueprint('projects', __name__)
@@ -13,8 +11,7 @@ proj = Blueprint('projects', __name__)
 @proj.route("/projects/")
 def projects():
     projects = get_all_projects()
-    return render_template('projects/projects.html', projects=projects,
-    thread=spotify_threading.stop_threads)
+    return render_template('projects/projects.html', projects=projects)
 
 
 @proj.route("/projects/create", methods=['GET', 'POST'])

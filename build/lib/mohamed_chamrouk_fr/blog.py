@@ -10,7 +10,6 @@ blog = Blueprint('blog', __name__)
 @blog.route("/blog/<int:id>")
 def detail(id):
     post = get_post(id)
-    app.logger.info(post)
     return render_template('blog/blog_solo.html', post=post, markdown=markdown)
 
 
@@ -18,7 +17,6 @@ def detail(id):
 @login_required
 def create():
     if request.method == 'POST':
-        app.logger.info(request)
         title = request.form['title']
         body = request.form['body']
         try:
@@ -58,8 +56,6 @@ def get_post(id, check_author=True):
 
     if check_author and current_user is None and post['author_id'] != \
        int(current_user.get_id()):
-        app.logger.info('auteur : '+str(post['author_id'])+', utilisateur : '
-                                   + current_user.get_id())
         abort(403)
 
     return post
