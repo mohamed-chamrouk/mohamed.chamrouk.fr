@@ -14,7 +14,7 @@ proj = Blueprint('projects', __name__)
 def projects():
     projects = get_all_projects()
     return render_template('projects/projects.html', projects=projects,
-    thread=spotify_threading.stop_threads)
+    thread= True if not spotify_threading.stop_threads and "Thread-spotify" in [thread.name for thread in threading.enumerate()] else False)
 
 
 @proj.route("/projects/create", methods=['GET', 'POST'])

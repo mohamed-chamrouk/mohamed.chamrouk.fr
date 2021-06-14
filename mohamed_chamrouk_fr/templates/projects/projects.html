@@ -24,7 +24,7 @@
             </a>
           </div>
           {% if current_user.is_authenticated %}
-          {% if thread == False %}
+          {% if thread == True %}
           <a href="/projects/{{project['idproject']}}_kill">
             <input type="button" class="btn btn-error to-widen" value="Terminer">
           </a>
