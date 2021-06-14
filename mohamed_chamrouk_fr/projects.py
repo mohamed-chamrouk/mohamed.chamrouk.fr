@@ -92,7 +92,6 @@ def get_project(id):
 
     if project is None:
         abort(404, f"Le Post d'id {id} n'existe pas.")
-
     return project
 
 
@@ -101,5 +100,4 @@ def get_all_projects():
         projects = connection.execute(
             'SELECT id, title, body, idproject, source'
             ' FROM projects').fetchall()
-    app.logger.info(f"projects : {projects}")
     return projects

@@ -171,7 +171,7 @@ def home():
     page = request.args.get("page")
 
     if not current_user.is_authenticated:
-        posts = posts[not posts['hide']]
+        posts = [post for post in posts if not post['hide']]
 
     if page:
         if int(page) > total_page:

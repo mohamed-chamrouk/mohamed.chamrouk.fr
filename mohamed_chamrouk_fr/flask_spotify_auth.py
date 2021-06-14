@@ -33,7 +33,6 @@ def handleToken(response):
     global REFRESH_TOKEN
     current_refresh = response.get("refresh_token")
     REFRESH_TOKEN = REFRESH_TOKEN if current_refresh is None else current_refresh
-    app.logger.info(f"expires in : {response.get('expires_in')} with refresh token : {REFRESH_TOKEN}")
     return [response.get("access_token"), auth_head, response.get('scope'),
             response.get('expires_in')]
 
