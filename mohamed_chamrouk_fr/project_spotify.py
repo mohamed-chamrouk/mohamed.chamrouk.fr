@@ -37,12 +37,12 @@ def auth():
 @login_required
 def callback():
     startup.getUserToken(request.args.get('code'))
-    if "Thread-spotify" not in [thread.name for thread in threading.enumerate()]:
+    if not spotify_threading.isRunning:
         app.logger.info("Creating new thread for refreshing spotify token and user stats.")
         sp_t = spotify_thread(2500, "Thread-spotify")
         sp_t.start()
 
-    if "Thread-spotify" in [thread.name for thread in threading.enumerate()] and spotify_threading.stop_threads:
+    if spotify_threading.isRunning and spotify_threading.stop_threads:
         spotify_threading.stop_threads = False
 
     startup.refreshStat()
@@ -143,7 +143,7 @@ def get_top_tracks():
         'url_track': row['url_track'],
         'count': row['count']
         })
-    return data
+    return data[:50 if len(data) > 50 else len(data)]
 
 
 def get_top_artists():
@@ -160,7 +160,7 @@ def get_top_artists():
         'artist': row['artist'],
         'count': row['count']
         })
-    return data
+    return data[:50 if len(data) > 50 else len(data)]
 
 
 def get_analytics_data(time_range, type):
