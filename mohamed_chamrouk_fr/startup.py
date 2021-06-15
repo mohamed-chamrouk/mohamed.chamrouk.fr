@@ -39,10 +39,10 @@ def getUserToken(code):
 
 
 def refreshToken(tim):
-    time.sleep(tim)
     global TOKEN_DATA
     TOKEN_DATA = refreshAuth(CLIENT_ID, CLIENT_SECRET)
     refreshStat()
+    time.sleep(tim)
 
 
 def getAccessToken():
