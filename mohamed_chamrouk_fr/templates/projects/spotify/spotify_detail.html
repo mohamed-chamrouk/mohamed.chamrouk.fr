@@ -1,0 +1,20 @@
+<div style="display: inline-block" class="to-widen-div">
+
+  <a href="{{project['source']}}">
+    <input type="button" class="btn btn-default to-widen" value="Source">
+  </a>
+</div>
+{% if current_user.is_authenticated %}
+{% if thread == True %}
+<a href="/projects/{{project['idproject']}}_kill">
+  <input type="button" class="btn btn-error to-widen" value="Terminer">
+</a>
+<a href="/projects/{{project['idproject']}}_auth">
+  <input type="button" class="btn btn-primary to-widen" value="Lancer">
+</a>
+{% else %}
+<a href="/projects/{{project['idproject']}}_auth">
+  <input type="button" class="btn btn-primary to-widen" value="Démarrer">
+</a>
+{% endif %}
+{% endif %}

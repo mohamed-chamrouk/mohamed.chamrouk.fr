@@ -4,6 +4,7 @@ import mohamed_chamrouk_fr.startup as startup
 from mohamed_chamrouk_fr import app
 
 stop_threads = False
+isRunning = False
 
 
 class spotify_thread(threading.Thread):
@@ -13,6 +14,8 @@ class spotify_thread(threading.Thread):
         self.name = name
 
     def run(self):
+        global isRunning
+        isRunning = True
         app.logger.info(f"Starting thread {self.name}")
         while True:
             time.sleep(600)
