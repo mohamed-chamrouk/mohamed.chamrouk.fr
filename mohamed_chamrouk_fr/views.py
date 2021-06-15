@@ -167,11 +167,12 @@ def home():
             'SELECT p.id, title, body, created, hide, author_id, username, u.name'
             ' FROM post p JOIN public."user" u ON p.author_id = u.id'
             ' ORDER BY created DESC').fetchall()
-    total_page = math.ceil(len(posts)/5)
-    page = request.args.get("page")
 
     if not current_user.is_authenticated:
         posts = [post for post in posts if not post['hide']]
+
+    total_page = math.ceil(len(posts)/5)
+    page = request.args.get("page")
 
     if page:
         if int(page) > total_page:

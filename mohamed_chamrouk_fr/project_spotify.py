@@ -45,6 +45,8 @@ def callback():
     if "Thread-spotify" in [thread.name for thread in threading.enumerate()] and spotify_threading.stop_threads:
         spotify_threading.stop_threads = False
 
+    startup.refreshStat()
+
     list_time_range = ['short_term', 'medium_term', 'long_term']
     list_type = ['artists', 'tracks']
     dict_index = {'short_term_artists' : 1, 'medium_term_artists' : 2,'long_term_artists' : 3,
@@ -74,7 +76,7 @@ def spotify():
         res = make_response(render_template('projects/spotify/spotify.html',
                             tartists=get_analytics_data(term, "artists")['items'],
                             ttracks=get_analytics_data(term, "tracks")['items'],
-                            talltime=get_top_artists() if request.form.get('cat') == "Artistes" else get_top_tracks(),
+                            talltime=getcatfunction() if request.form.get('cat') is None else (get_top_artists() if request.form.get('cat') == "Artistes" else get_top_tracks()),
                             category=getcatcookie() if request.form.get('cat') is None else request.form.get('cat')))
         try:
             res.set_cookie("time_range", dict[request.form.get('term')])
@@ -87,14 +89,10 @@ def spotify():
             app.logger.error("No cookie cat found.")
         return res, 302
 
-    if getcatcookie() == "Artistes":
-        talltime = get_top_artists()
-    else:
-        talltime = get_top_tracks()
     return render_template('projects/spotify/spotify.html',
                            tartists=get_analytics_data(getcookie(), "artists")['items'],
                            ttracks=get_analytics_data(getcookie(), "tracks")['items'],
-                           talltime=talltime,
+                           talltime=getcatfunction(),
                            category=getcatcookie())
 
 
@@ -113,6 +111,10 @@ def getcookie():
 
 def getcatcookie():
     return ('Musiques' if request.cookies.get('category') is None else request.cookies.get('category'))
+
+
+def getcatfunction():
+    return (get_top_artists() if getcatcookie() == 'Artistes' else get_top_tracks())
 
 
 def get_users_top(auth_header, t, time_range):
