@@ -1,10 +1,9 @@
 import threading
 import time
+import uwsgi
 import mohamed_chamrouk_fr.startup as startup
 from mohamed_chamrouk_fr import app
 
-stop_threads = False
-isRunning = False
 
 
 class spotify_thread(threading.Thread):
@@ -14,14 +13,13 @@ class spotify_thread(threading.Thread):
         self.name = name
 
     def run(self):
-        global isRunning
-        isRunning = True
+        app.logger.info(f"Cache value of isRunning is now : {uwsgi.cache_get('isRunning')}")
         app.logger.info(f"Starting thread {self.name}")
         while True:
-            time.sleep(600)
-            global stop_threads
-            if not stop_threads:
+            if True: #uwsgi.cache_get('stop_threads').decode('utf-8') == 'False':
+                app.logger.info("Refreshing the token")
                 startup.refreshToken(self.time)
                 app.logger.info(f"{self.name} : Execution successful")
             else:
                 app.logger.info(f"{self.name} : Execution is paused")
+            time.sleep(600)

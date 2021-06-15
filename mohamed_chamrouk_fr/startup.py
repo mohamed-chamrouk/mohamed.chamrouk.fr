@@ -19,7 +19,7 @@ CLIENT_SECRET = app.config['CLIENT_SECRET']
 
 #Port and callback url can be changed or ledt to localhost:5000
 PORT = "5000"
-CALLBACK_URL = "http://127.0.0.1"
+CALLBACK_URL = "https://mohamed.chamrouk.fr"
 CALLBACK = "projects/spotify_callback"
 
 #Add needed scope from spotify user
@@ -29,13 +29,13 @@ TOKEN_DATA = []
 
 
 def getUser():
-    return getAuth(CLIENT_ID, f"{CALLBACK_URL}:{PORT}/{CALLBACK}/", SCOPE)
+    return getAuth(CLIENT_ID, f"{CALLBACK_URL}/{CALLBACK}/", SCOPE)
 
 
 def getUserToken(code):
     global TOKEN_DATA
     TOKEN_DATA = getToken(code, CLIENT_ID, CLIENT_SECRET,
-                          f"{CALLBACK_URL}:{PORT}/{CALLBACK}/")
+                          f"{CALLBACK_URL}/{CALLBACK}/")
 
 
 def refreshToken(tim):
