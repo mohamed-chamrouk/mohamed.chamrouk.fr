@@ -5,6 +5,7 @@ from flask import (Blueprint, render_template, request,
 from mohamed_chamrouk_fr import conn
 from mohamed_chamrouk_fr import app
 import threading
+import uwsgi
 
 
 proj = Blueprint('projects', __name__)
@@ -13,9 +14,12 @@ proj = Blueprint('projects', __name__)
 @proj.route("/projects/")
 def projects():
     projects = get_all_projects()
-    return render_template('projects/projects.html', projects=projects,
-    thread = True if not spotify_threading.stop_threads and spotify_threading.isRunning else False)
-
+    app.logger.info(f"In cache : isRunning : {uwsgi.cache_get('isRunning')} and stop_threads : {uwsgi.cache_get('stop_threads')}")
+    try:
+        return render_template('projects/projects.html', projects=projects,
+    thread = True if uwsgi.cache_get('stop_threads').decode("utf-8") == 'False' and uwsgi.cache_get('isRunning').decode("utf-8") == 'True' else False)
+    except:
+        return render_template('projects/projects.html', projects=projects, thread=False)
 
 @proj.route("/projects/create", methods=['GET', 'POST'])
 @login_required

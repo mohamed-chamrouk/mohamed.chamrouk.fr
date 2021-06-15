@@ -1,6 +1,7 @@
 import threading
 import requests
 import json
+import uwsgi
 import mohamed_chamrouk_fr.startup as startup
 from mohamed_chamrouk_fr import app, conn
 from mohamed_chamrouk_fr.spotify_threading import spotify_thread
@@ -23,6 +24,8 @@ USER_RECENTLY_PLAYED_ENDPOINT = "{}/{}/{}".format(USER_PROFILE_ENDPOINT,
 BROWSE_FEATURED_PLAYLISTS = "{}/{}/{}".format(SPOTIFY_API_URL, 'browse',
                                               'featured-playlists')
 
+uwsgi.cache_clear()
+
 spot = Blueprint('project_spotify', __name__)
 
 
@@ -37,16 +40,18 @@ def auth():
 @login_required
 def callback():
     startup.getUserToken(request.args.get('code'))
-    if not spotify_threading.isRunning:
+    if not uwsgi.cache_exists('isRunning'):
         app.logger.info("Creating new thread for refreshing spotify token and user stats.")
+        uwsgi.cache_set('isRunning', 'True')
+        uwsgi.cache_set('stop_threads', 'False')
         sp_t = spotify_thread(2500, "Thread-spotify")
         sp_t.start()
-
-    if spotify_threading.isRunning and spotify_threading.stop_threads:
-        spotify_threading.stop_threads = False
-
-    startup.refreshStat()
-
+    try:
+        if uwsgi.cache_get('isRunning').decode('utf-8') == 'True' and uwsgi.cache_get('stop_threads').decode('utf-8') == 'True':
+            app.logger.info("Relancement de l'application spotify")
+            uwsgi.cache_update('stop_threads', 'False')
+    except AttributeError: 
+        app.logger.error(f"La variable isRunning ou stop_threads n'est pas initialisée, valeurs : ir:{uwsgi.cache_get('isRunning')} et st:{uwsgi.cache_get('stop_threads')}")
     list_time_range = ['short_term', 'medium_term', 'long_term']
     list_type = ['artists', 'tracks']
     dict_index = {'short_term_artists' : 1, 'medium_term_artists' : 2,'long_term_artists' : 3,
@@ -99,9 +104,11 @@ def spotify():
 @spot.route("/projects/spotify_kill/")
 @login_required
 def kill():
-    for thread in threading.enumerate():
-        if thread.name == "Thread-spotify":
-            spotify_threading.stop_threads = True
+    try:
+        uwsgi.cache_update('stop_threads', 'True')
+        app.logger.info(f"Application spotify mise en pause avec : {uwsgi.cache_get('stop_threads')}")
+    except:
+        app.logger.info("Couldn't kill process")
     return redirect(url_for('projects.projects'))
 
 
