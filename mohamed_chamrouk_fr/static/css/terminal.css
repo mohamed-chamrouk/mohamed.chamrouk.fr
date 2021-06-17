@@ -540,6 +540,7 @@ input:-webkit-autofill,input:-webkit-autofill:focus textarea:-webkit-autofill,in
 }
 .btn-default:focus:not(.btn-ghost),.btn-default:hover{
 	background-color:var(--secondary-color);
+	border-color:var(--secondary-color);
 	color:var(--invert-font-color)
 }
 .btn-default.btn-ghost:focus,.btn-default.btn-ghost:hover{

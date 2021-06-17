@@ -19,9 +19,9 @@ Application permettant de suivre différentes statistiques d'utilisation d'un ut
     <fieldset>
       <legend style="font-size: 17px">Tops utilisateur</legend>
       <div class="form-buttons" style="padding-bottom: 10px">
-        <input type="submit" class="btn btn-default" name="term" value="Court">
-        <input type="submit" class="btn btn-default" name="term" value="Moyen">
-        <input type="submit" class="btn btn-default" name="term" value="Long">
+        <input {%if time_range == 'short_term'%} style="background-color:var(--primary-color); border-color:var(--primary-color)" {%endif%} type="submit" class="btn btn-default" name="term" value="Court">
+        <input {%if time_range == 'medium_term'%} style="background-color:var(--primary-color); border-color:var(--primary-color)" {%endif%} type="submit" class="btn btn-default" name="term" value="Moyen">
+        <input {%if time_range == 'long_term'%} style="background-color:var(--primary-color); border-color:var(--primary-color)" {%endif%} type="submit" class="btn btn-default" name="term" value="Long">
       </div>
       <div class="wrapper-spotify-inside">
         <div class="to-border">
@@ -33,7 +33,6 @@ Application permettant de suivre différentes statistiques d'utilisation d'un ut
                   <th style="width:10%"></th>
                   <th style="width:20%">Song art</th>
                   <th>Titre</th>
-                  <th>Artiste</th>
                 </tr>
               </thead>
               <tbody>
@@ -41,8 +40,7 @@ Application permettant de suivre différentes statistiques d'utilisation d'un ut
                 <tr>
                   <td class="rank">{{loop.index}}</td>
                   <td><img class="track_img" src="{{ track.album.images[1].url }}"></td>
-                  <td>{{ track.name }}</td>
-                  <td>{% for artist in track.artists %} {% if loop.index == loop.length %} {{ artist.name }} {% else %} {{ artist.name+", "}} {%endif%} {%endfor%}</td>
+                  <td><b>{{track.name}}</b><br>de {% for artist in track.artists %} {% if loop.index == loop.length %} {{ artist.name }} {% else %} {{ artist.name+", "}} {%endif%} {%endfor%}</td>
                 </tr>
                 {%endfor%}
               </tbody>
@@ -77,15 +75,15 @@ Application permettant de suivre différentes statistiques d'utilisation d'un ut
       </div>
     </fieldset>
   </form>
-  <form action="/projects/spotify/"  style="grid-area: two" method="POST">
+  <form class="form-spotify-stat" action="/projects/spotify/"  style="grid-area: two" method="POST">
     <fieldset>
-      <legend style="font-size: 17px">statistiques détaillées</legend>
+      <legend style="font-size: 17px">Statistiques détaillées</legend>
       <div class="form-buttons" style="padding-bottom: 10px">
-        <input type="submit" class="btn btn-default" name="cat" value="Artistes">
-        <input type="submit" class="btn btn-default" name="cat" value="Musiques">
+        <input {%if category == "Artistes" %} style="background-color: var(--primary-color); border-color: var(--primary-color)" {% endif %}type="submit" class="btn btn-default" name="cat" value="Artistes">
+        <input {% if category == "Musiques" %} style="background-color: var(--primary-color); border-color: var(--primary-color)"{%endif%}type="submit" class="btn btn-default" name="cat" value="Musiques">
       </div>
       <div class="to-border" >
-        <div style="text-align: center">Top 50 artistes</div>
+        <div style="text-align: center">{% if category == "Artistes" %} Statistiques top 50 artistes {% else %} Statistiques top 50 Musiques {% endif %}</div>
         <div class="info-table" style="overflow: scroll; height: 800px">
           <table class="table-info" style="table-layout:fixed; width:100%; height: 100%; margin-top:0px;">
             <thead style="visibility: collapse">

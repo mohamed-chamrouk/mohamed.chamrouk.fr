@@ -155,6 +155,10 @@ body {
   .to-widen-div {
     padding-right: 0px !important;
   }
+
+  .form-spotify-stat {
+    padding-top: 15px;
+  }
 }
 
 @media (min-width: 768px) {
