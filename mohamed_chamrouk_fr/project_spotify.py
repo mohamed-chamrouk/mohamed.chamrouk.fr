@@ -82,7 +82,8 @@ def spotify():
                             tartists=get_analytics_data(term, "artists")['items'],
                             ttracks=get_analytics_data(term, "tracks")['items'],
                             talltime=getcatfunction() if request.form.get('cat') is None else (get_top_artists() if request.form.get('cat') == "Artistes" else get_top_tracks()),
-                            category=getcatcookie() if request.form.get('cat') is None else request.form.get('cat')))
+                            category=getcatcookie() if request.form.get('cat') is None else request.form.get('cat'),
+                            time_range=term))
         try:
             res.set_cookie("time_range", dict[request.form.get('term')])
         except:
@@ -98,7 +99,8 @@ def spotify():
                            tartists=get_analytics_data(getcookie(), "artists")['items'],
                            ttracks=get_analytics_data(getcookie(), "tracks")['items'],
                            talltime=getcatfunction(),
-                           category=getcatcookie())
+                           category=getcatcookie(),
+                           time_range=getcookie())
 
 
 @spot.route("/projects/spotify_kill/")
