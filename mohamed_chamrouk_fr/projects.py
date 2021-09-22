@@ -21,6 +21,7 @@ def projects():
     except:
         return render_template('projects/projects.html', projects=projects, thread=False)
 
+
 @proj.route("/projects/create", methods=['GET', 'POST'])
 @login_required
 def create():

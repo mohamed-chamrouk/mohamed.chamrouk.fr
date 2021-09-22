@@ -1,0 +1,26 @@
+@media (min-width: 768px) {
+    .mobile-table {
+        visibility: collapse;
+    }
+    .pc-table {
+        visibility: visible;
+    }
+    .mobile-head {
+        width: 20%;
+    }
+}
+
+@media (max-width: 768px) {
+    .pc-table {
+        visibility: collapse;
+        display: table;
+    }
+    .mobile-table {
+        visibility: visible;
+    }
+    .mobile-head {
+        width: 0%;
+        visibility: collapse;
+        font-size: 0px;
+    }
+}
