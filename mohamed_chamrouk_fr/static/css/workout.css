@@ -1,3 +1,37 @@
+.no-border-table {
+    border: 0px;
+}
+
+.terminal-alert-error {
+    text-align: left;
+}
+
+.terminal-alert-primary {
+    text-align: left;
+}
+
+.notes {
+    font-size: small;
+    font-weight: 300;
+}
+
+p {
+    font-size: initial;
+}
+
+p a {
+    font-size: initial;
+}
+
+tr {
+    font-size : initial;
+    font-weight: 600;
+}
+
+.terminal-alert {
+    margin-bottom: 0px;
+}
+
 @media (min-width: 768px) {
     .mobile-table {
         visibility: collapse;
