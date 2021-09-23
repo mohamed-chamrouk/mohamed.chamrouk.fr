@@ -1,5 +1,7 @@
+import mohamed_chamrouk_fr
 import requests
 import json
+from mohamed_chamrouk_fr import app
 import mohamed_chamrouk_fr.startup as startup
 from flask import (redirect, Blueprint, request, render_template, url_for,
                    make_response)
@@ -52,15 +54,18 @@ def workout():
         jsonFile.close()
 
     sessions = jsonWorkout['sessions']
-    session1 = sessions[5]
-    return render_template('projects/workout/workout_single.html', workout=session1, img_dict=img_dict, type=type)
+    return render_template('projects/workout/workout_home.html', sessions=sessions, exercises=list(img_dict.keys()))
 
-@wkt.route("/projects/workout/<int:id>")
+@wkt.route("/projects/workout/<string:date>")
 @login_required
-def workout_detail(id):
+def workout_detail(date):
+    date=date.replace('-', '/')
     with open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json') as jsonFile:
         jsonWorkout = json.load(jsonFile)
         jsonFile.close()
-
-    session = jsonWorkout['sessions'][id]
-    return render_template('projects/workout/workout.html', workout=session1, img_dict=img_dict, type=type)
+    session = []
+    for workout in jsonWorkout['sessions']:
+        if workout['date'] == date:
+            session += [workout]
+    app.logger.info(f"{session} et {session[0]}")
+    return render_template('projects/workout/workout_single.html', workout=session[0], img_dict=img_dict, type=type)
