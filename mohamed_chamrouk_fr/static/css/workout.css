@@ -24,12 +24,35 @@ p a {
 }
 
 tr {
-    font-size : initial;
+    font-size: initial;
     font-weight: 600;
+}
+
+.table-home td,
+.table-home th,
+.table-home td p {
+    vertical-align: middle;
+    margin-bottom: 0px;
+    text-align: center;
+    border: 0px;
+    border-collapse: unset;
+}
+
+.button-edits {
+    grid-area: two;
+    margin-top: 10px;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
 }
 
 .terminal-alert {
     margin-bottom: 0px;
+}
+
+.btn {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -41,6 +64,16 @@ tr {
     }
     .mobile-head {
         width: 20%;
+    }
+    .wrapper-workout {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas: "one three" "two three";
+    }
+    .overflow-field {
+        overflow-y: scroll;
+        height: 700px;
     }
 }
 
