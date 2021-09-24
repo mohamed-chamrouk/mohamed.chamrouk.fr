@@ -117,5 +117,5 @@ def workout_add(lift):
         for exercise in session['lifts']:
             if exercise['exercise'] == lift:
                 stat_dict[session['date']] = max([set['weight'] for set in exercise['sets']])
-                
-    return render_template('projects/workout/workout_graph.html', xValues=list(stat_dict.keys()), yValues=list(stat_dict.values()))
+
+    return render_template('projects/workout/workout_graph.html', xValues=list(stat_dict.keys()), yValues=list(stat_dict.values()), lift=lift)
