@@ -4,39 +4,41 @@ import json
 
 
 exercise_dict = {
-    "dev_couche_barre": ["dc", "dev couche barre", "dev couche"],
+    "dev_couche_barre": ["dc", "dev couche barre", "dev couche", "dev couché barre"],
     "dev_couche_haltere": ["dev haltere"],
-    "dev_arnold": ["dev arnold"],
-    "dev_incline_haltere": ["devhalt", "dev incline"],
+    "dev_arnold": ["dev arnold", "dev-harnold"],
+    "dev_incline_haltere": ["devhalt", "dev incline", "dev incliné"],
     "dev_incline_barre": ["di"],
     "ecarte_couche": ["ec"],
     "curl_ez_barre": ["cbez"],
     "curl_alterne": ["ca"],
     "curl_banc": ["curl banc"],
     "curl_spider": ["curl spider"],
-    "squat_arriere": ["squat arriere"],
+    "squat_arriere": ["squat arrière", "squat arriere"],
     "presse_inclinee": ["presse inclinee", "presse"],
     "presse_jambe": ["pr"],
     "leg_extension": ["le", "legex", "leg extension", "extension"],
     "leg_curl": ["lc"],
     "leg_curl_assis": ["leg curl"],
-    "souleve_romain_haltere": ["souleve"],
+    "souleve_romain_haltere": ["souleve", "soulevé"],
     "dev_militaire_cadre_guide": ["dmcg"],
-    "elevation_laterale": ["el", "elev laterale"],
-    "oiseau_haltere": ["oi", "oiseau haltere", "oiseaux halteres", "oiseau haltere assis"],
-    "haussements_epaules": ["haussements epaules"],
+    "elevation_laterale": ["el", "elev laterale", "elev latérale"],
+    "oiseau_haltere": ["oi", "oiseau haltere","oiseau haltère","oiseaux haltères", "oiseaux halteres", "oiseau haltere assis"],
+    "haussements_epaules": ["haussements epaules", "haussements épaules"],
     "v_squat": ["v squat"],
     "tirage_devant": ["td", "tirage devant"],
     "tirage_nuque": ["tn"],
     "tirage_neutre": ["tirage serre", "tirage neutre"],
-    "rowing_haltere": ["rowing haltere"],
+    "rowing_haltere": ["rowing haltere", "rowing haltère"],
     "rowing_assis": ["ra", "rowing assis"],
     "elevation_barre_front": ["ebf", "cbf", "barre front"],
     "extension_haltere_nuque": ["ehn", "extensions haltere"],
     "extension_poulie_haute": ["extension poulie haute"],
     "poulie_vis_a_vis": ["poulie vis à vis"],
     "shoulder_press": ["sp", "shoulder press"],
-    "traction": ["pull up"]
+    "traction": ["traction"],
+    "mollets": ["mollets"],
+    "mollets_debout": ["mollets debout"]
 }
 
 
@@ -60,8 +62,10 @@ with open('templates/projects/workout/temp_workout_data_extract') as file:
     for line in Lines:
         line_number += 1
         line = line.lower()
+        
 
         if line[:4] in ['push', 'pull', 'legs']:
+            workout_type = line[:4]
             i += 1
             date = line[5:line.find(':')].replace(' ', '').replace(':', '').\
                 replace('\n', '')+'/21'
@@ -69,7 +73,7 @@ with open('templates/projects/workout/temp_workout_data_extract') as file:
                 global_notes = line[line.find('(')+1:line.find(')')]
             else:
                 global_notes = ""
-            json_data = {"date": date, "lifts": [], "global_notes": global_notes}
+            json_data = {"date": date, "type": workout_type, "lifts": [], "global_notes": global_notes}
             write_json(json_data, 'sessions')
         elif line[0].isalpha():
             for k, v in exercise_dict.items():
@@ -91,17 +95,19 @@ with open('templates/projects/workout/temp_workout_data_extract') as file:
                         remaining.replace(f"({p})", "")
                     else:
                         reps = remaining[remaining.find('(')+1:remaining.find(')')].split(' ')
-                if remaining.find('~'):
+                if remaining.find('~') != -1:
                     notes += ['meh']
                     remaining = remaining.replace('~', '')
 
             dict_lift = {}
             for idx,r in enumerate(re.findall(r' (.*?)-', remaining)):
-                if (r,[re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]) in dict_lift.items():
-                    print('non')
-                    dict_lift[str(int(r)+1)] = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]
-                else:
-                    dict_lift[r] = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]
+                if exercise == "dev_incline_haltere":
+                    test = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')]
+                    test_r = re.findall(r' (.*?)-', remaining)
+                    print(f"{exercise} daté du {date} : {remaining} : {test} : {test_r}")
+                while r in dict_lift.keys():
+                    r = str(int(r) + 1)
+                dict_lift[r] = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]
             
             for r, w in dict_lift.items():
                 if r.find('(') != -1:

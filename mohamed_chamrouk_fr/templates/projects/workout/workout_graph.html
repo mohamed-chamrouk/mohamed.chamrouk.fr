@@ -1,7 +1,7 @@
 {% extends 'projects/workout/workout.html' %}
 
 {% block content %}
-<div style="margin-bottom: 10px;"><a style="font-size: 1.5em; font-weight: 600; ">Statistiques détaillés pour le {{ lift }}</a></div>
+<div style="margin-bottom: 10px;"><a style="font-size: 1.5em; font-weight: 600; ">Statistiques détaillés pour le {{ wrd_dict[lift] }}</a></div>
 <div class="canva1 to-border" style="width: 100%">
     <div style="text-align: center">Statistiques</div>
     <canvas id="myBarChart"></canvas>

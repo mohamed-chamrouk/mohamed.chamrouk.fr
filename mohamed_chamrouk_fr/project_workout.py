@@ -43,7 +43,47 @@ img_dict = {
     "extension_poulie_haute": "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Cable-Rope-Pushdown_600x600.png?v=1612136916",
     "poulie_vis_a_vis": "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Cable-Crossover_09c90616-2777-47ed-927e-d5987edfce09_600x600.png?v=1612138036",
     "shoulder_press": "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Barbell-Push-Press_8ba0542a-aba8-45ce-bdee-1a3eb4736514_600x600.png?v=1621162658",
-    "traction": "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Pull-Up_600x600.png?v=1619977612"
+    "traction": "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Pull-Up_600x600.png?v=1619977612",
+    "mollets": "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Seated-Calf-Raise_8c8641b2-10f2-4dc8-9adb-8d80fd1a16d0_600x600.png?v=1612137064",
+    "mollets_debout": "https://cdn.shopify.com/s/files/1/0269/5551/3900/files/Standing-Calf-Raise_61746b47-98aa-49ee-bb97-5a19562592b9_600x600.png?v=1612137090"
+}
+
+wrd_dict = {
+    "dev_couche_barre": "Développé couché barre",
+    "dev_couche_haltere": "Développé couché haltères",
+    "dev_arnold": "Développé Arnold",
+    "dev_incline_haltere": "Développé incliné haltères",
+    "dev_incline_barre": "Développé incliné barre",
+    "ecarte_couche": "Ecarté couché",
+    "curl_ez_barre": "Curl EZ barre",
+    "curl_alterne": "Curl alterné haltères",
+    "curl_banc": "Curl banc",
+    "curl_spider": "Curl spider",
+    "squat_arriere": "Squat arrière",
+    "presse_inclinee": "Presse inclinée",
+    "presse_jambe": "Presse jambes",
+    "leg_extension": "Leg extension",
+    "leg_curl": "Leg curl",
+    "leg_curl_assis": "Leg curl assis",
+    "souleve_romain_haltere": "Soulevé roumain aux haltères",
+    "dev_militaire_cadre_guide": "Développé militaire cadre guidé",
+    "elevation_laterale": "Elévation latérale",
+    "oiseau_haltere": "Oiseau haltères",
+    "haussements_epaules": "Haussements épaules",
+    "v_squat": "Vertical squat",
+    "tirage_devant": "Tirage devant",
+    "tirage_nuque": "Tirage nuque",
+    "tirage_neutre": "Tirage neutre",
+    "rowing_haltere": "Rowing haltère",
+    "rowing_assis": "Rowing assis à la poulie",
+    "elevation_barre_front": "Elévation barre front",
+    "extension_haltere_nuque": "Elévation haltère nuque",
+    "extension_poulie_haute": "Extension poulie haute",
+    "poulie_vis_a_vis": "Poulie vis à vis",
+    "shoulder_press": "Shoulder press",
+    "traction": "Traction",
+    "mollets": "Mollets assis",
+    "mollets_debout": "Mollets debouts"
 }
 
 @wkt.route("/projects/workout/")
@@ -54,7 +94,7 @@ def workout():
         jsonFile.close()
 
     sessions = jsonWorkout['sessions']
-    return render_template('projects/workout/workout_home.html', sessions=sessions, exercises=list(img_dict.keys()))
+    return render_template('projects/workout/workout_home.html', sessions=sessions, exercises=list(img_dict.keys()), wrd_dict=wrd_dict)
 
 @wkt.route("/projects/workout/<string:date>/")
 @login_required
@@ -68,7 +108,7 @@ def workout_detail(date):
         if workout['date'] == date:
             session += [workout]
     app.logger.info(f"{session} et {session[0]}")
-    return render_template('projects/workout/workout_single.html', workout=session[0], img_dict=img_dict, type=type)
+    return render_template('projects/workout/workout_single.html', workout=session[0], img_dict=img_dict, type=type, wrd_dict=wrd_dict)
 
 @wkt.route('/projects/workout/edit_json/', methods=('GET', 'POST'))
 @login_required
@@ -87,7 +127,7 @@ def workout_edit_json():
 
     return render_template('projects/workout/workout_edit_json.html', jsonFile=jsonWorkout)
 
-"""@wkt.route('/projects/workout/add/', methods=('GET', 'POST'))
+@wkt.route('/projects/workout/add/', methods=('GET', 'POST'))
 @login_required
 def workout_add():
     with open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json') as jsonFile:
@@ -102,7 +142,7 @@ def workout_add():
             json.dump(new_json, jsonFile, indent=4)
         return redirect(url_for('project_workout.workout'))
 
-    return render_template('projects/workout/workout_edit_json.html', jsonFile=jsonWorkout)"""
+    return render_template('projects/workout/workout_edit_json.html', jsonFile=jsonWorkout)
 
 @wkt.route('/projects/workout/lift/<string:lift>/')
 @login_required
@@ -118,4 +158,4 @@ def workout_add(lift):
             if exercise['exercise'] == lift:
                 stat_dict[session['date']] = max([set['weight'] for set in exercise['sets']])
 
-    return render_template('projects/workout/workout_graph.html', xValues=list(stat_dict.keys()), yValues=list(stat_dict.values()), lift=lift)
+    return render_template('projects/workout/workout_graph.html', xValues=list(stat_dict.keys()), yValues=list(stat_dict.values()), lift=lift, wrd_dict=wrd_dict)
