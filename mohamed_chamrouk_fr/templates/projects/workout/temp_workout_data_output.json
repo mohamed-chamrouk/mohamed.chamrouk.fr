@@ -332,10 +332,14 @@
                     "sets": [
                         {
                             "weight": 70.0,
-                            "reps": 8
+                            "reps": 10
                         },
                         {
                             "weight": 75.0,
+                            "reps": 8
+                        },
+                        {
+                            "weight": 80.0,
                             "reps": 6
                         }
                     ],

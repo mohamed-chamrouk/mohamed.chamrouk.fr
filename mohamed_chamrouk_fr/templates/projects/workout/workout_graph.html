@@ -1,14 +1,15 @@
 {% extends 'projects/workout/workout.html' %}
 
 {% block content %}
+<div style="margin-bottom: 10px;"><a style="font-size: 1.5em; font-weight: 600; ">Statistiques détaillés pour le {{ lift }}</a></div>
 <div class="canva1 to-border" style="width: 100%">
-    <div style="text-align: center">Traffic sur les 7 derniers jours</div>
+    <div style="text-align: center">Statistiques</div>
     <canvas id="myBarChart"></canvas>
 </div>
 
 <script>
-    var xValuesBar = {{ xValues }};
-    var yValuesBar = {{ yValues }};
+    var xValuesBar = {{ xValues|safe }};
+    var yValuesBar = {{ yValues|safe }};
     var barColorsBar = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
     var grid_color = getComputedStyle(document.documentElement).getPropertyValue('--grid-color');
     var font_color = getComputedStyle(document.documentElement).getPropertyValue('--font-color');
@@ -46,7 +47,9 @@
                         color: grid_color
                     }
                 }
-            }
+            },
+            lineTension: 0.2,
+            borderColor: barColorsBar,
         }
     });
 </script>
