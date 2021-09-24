@@ -13,7 +13,7 @@
                     {% for session in sessions|reverse %}
                     <tr>
                         <td style="border-right-width: 0px;">
-                            <a class="btn btn-default" href="/projects/workout/{{session['date']|replace('/', '-')}}">Séance du {{session['date']}}</a>
+                            <a class="btn btn-default" href="/projects/workout/{{session['date']|replace('/', '-')}}">Séance {{ session['type']|upper }} du {{session['date']}}</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -61,7 +61,7 @@
                     {% for exercise in exercises %}
                     <tr>
                         <td>
-                            <a class="btn btn-secondary">{{ exercise }} &gt;</a>
+                            <a class="btn btn-secondary" href="/projects/workout/lift/{{ exercise }}">{{ wrd_dict[exercise] }} &gt;</a>
                         </td>
                     </tr>
                     {% endfor %}

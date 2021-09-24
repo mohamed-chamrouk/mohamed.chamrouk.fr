@@ -1,0 +1,24 @@
+{% extends 'projects/workout/workout.html' %}
+
+{% block content %}
+<form method="post">
+    <a>Ajouter un nouvel entraînement</a>
+    <div class="grow-wrap">
+        <pre id="json">
+        <textarea name="json" id="body-text"
+            onInput="this.parentNode.dataset.replicatedValue = this.value" style="overflow: scroll;"></textarea>
+        </pre>
+    </div>
+    <input class="dropbtn-invert" type="submit" value="Sauvegarder">
+</form>
+<form action="/projects/workout">
+    <div style="padding-left: 20px;">
+        <input class="dropbtn-invert" type="submit" style="left:20px; background: var(--secondary-color);"
+            value="Annuler">
+    </div>
+</form>
+
+<script>
+document.getElementById("json").textContent = JSON.stringify(data, undefined, 2);
+</script>
+{% endblock %}

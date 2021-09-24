@@ -2,7 +2,7 @@
 
 {% block content %}
 <div style="padding-top:0px;">
-    <a style="font-size: 1.5em; font-weight: 600;">Séance du {{workout['date']}}</a>
+    <a style="font-size: 1.5em; font-weight: 600;">Séance {{workout['type']|upper}} du {{workout['date']}}</a>
     <p style="font-size: 1em;"> &gt; Commentaires sur la séance : {{workout['global_notes']}}</p>
 
 
@@ -19,13 +19,13 @@
             <tr class="mobile-table">
                 <td></td>
                 <td style="text-align: center;"><img src="{{ img_dict[lift['exercise']] }}">
-                    <p>{{lift['exercise']}}</p><a>Notes : </a>
+                    <p>{{wrd_dict[lift['exercise']]}}</p><a>Notes : </a>
                     <p class="notes">{{lift['notes']}}</p>
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center;" class="pc-table"><img src="{{ img_dict[lift['exercise']] }}">
-                    <p>{{lift['exercise']}}</p><a>Notes : </a>
+                    <p>{{wrd_dict[lift['exercise']]}}</p><a>Notes : </a>
                     <p class="notes">{{lift['notes']}}</p>
                 </td>
                 <td>
