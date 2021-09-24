@@ -1,0 +1,53 @@
+{% extends 'projects/workout/workout.html' %}
+
+{% block content %}
+<div class="canva1 to-border" style="width: 100%">
+    <div style="text-align: center">Traffic sur les 7 derniers jours</div>
+    <canvas id="myBarChart"></canvas>
+</div>
+
+<script>
+    var xValuesBar = {{ xValues }};
+    var yValuesBar = {{ yValues }};
+    var barColorsBar = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+    var grid_color = getComputedStyle(document.documentElement).getPropertyValue('--grid-color');
+    var font_color = getComputedStyle(document.documentElement).getPropertyValue('--font-color');
+    Chart.defaults.color = font_color;
+
+    new Chart("myBarChart", {
+        type: "line",
+        data: {
+            labels: xValuesBar,
+            datasets: [{
+                backgroundColor: barColorsBar,
+                data: yValuesBar
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: true,
+            title: {
+                display: true,
+                text: "World Wine Production 2018"
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: grid_color
+                    }
+                },
+                y: {
+                    grid: {
+                        color: grid_color
+                    }
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

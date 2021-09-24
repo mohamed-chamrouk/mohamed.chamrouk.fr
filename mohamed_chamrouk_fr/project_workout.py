@@ -56,7 +56,7 @@ def workout():
     sessions = jsonWorkout['sessions']
     return render_template('projects/workout/workout_home.html', sessions=sessions, exercises=list(img_dict.keys()))
 
-@wkt.route("/projects/workout/<string:date>")
+@wkt.route("/projects/workout/<string:date>/")
 @login_required
 def workout_detail(date):
     date=date.replace('-', '/')
@@ -69,3 +69,53 @@ def workout_detail(date):
             session += [workout]
     app.logger.info(f"{session} et {session[0]}")
     return render_template('projects/workout/workout_single.html', workout=session[0], img_dict=img_dict, type=type)
+
+@wkt.route('/projects/workout/edit_json/', methods=('GET', 'POST'))
+@login_required
+def workout_edit_json():
+    with open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json') as jsonFile:
+        jsonWorkout = json.load(jsonFile)
+        jsonFile.close()
+
+    if request.method == 'POST':
+        new_json = request.form['json']
+        open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json', 'w').close()
+        with open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json', 'r+') as jsonFile:
+            jsonFile.seek(0)
+            json.dump(new_json, jsonFile, indent=4)
+        return redirect(url_for('project_workout.workout'))
+
+    return render_template('projects/workout/workout_edit_json.html', jsonFile=jsonWorkout)
+
+"""@wkt.route('/projects/workout/add/', methods=('GET', 'POST'))
+@login_required
+def workout_add():
+    with open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json') as jsonFile:
+        jsonWorkout = json.load(jsonFile)
+        jsonFile.close()
+
+    if request.method == 'POST':
+        new_json = request.form['json']
+        open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json', 'w').close()
+        with open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json', 'r+') as jsonFile:
+            jsonFile.seek(0)
+            json.dump(new_json, jsonFile, indent=4)
+        return redirect(url_for('project_workout.workout'))
+
+    return render_template('projects/workout/workout_edit_json.html', jsonFile=jsonWorkout)"""
+
+@wkt.route('/projects/workout/lift/<string:lift>/')
+@login_required
+def workout_add(lift):
+    with open('mohamed_chamrouk_fr/templates/projects/workout/temp_workout_data_output.json') as jsonFile:
+        jsonWorkout = json.load(jsonFile)['sessions']
+        jsonFile.close()
+
+    stat_dict = {}
+
+    for session in jsonWorkout:
+        for exercise in session['lifts']:
+            if exercise['exercise'] == lift:
+                stat_dict[session['date']] = max([set['weight'] for set in exercise['sets']])
+                
+    return render_template('projects/workout/workout_graph.html', xValues=list(stat_dict.keys()), yValues=list(stat_dict.values()))
