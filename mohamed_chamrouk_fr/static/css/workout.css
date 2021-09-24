@@ -28,6 +28,10 @@ tr {
     font-weight: 600;
 }
 
+textarea {
+    height: 700px;
+}
+
 .table-home td,
 .table-home th,
 .table-home td p {
@@ -55,6 +59,11 @@ tr {
     width: 100%;
 }
 
+.overflow-field {
+    overflow-y: scroll;
+    height: 700px;
+}
+
 @media (min-width: 768px) {
     .mobile-table {
         visibility: collapse;
@@ -71,10 +80,7 @@ tr {
         grid-template-columns: 2fr 1fr;
         grid-template-areas: "one three" "two three";
     }
-    .overflow-field {
-        overflow-y: scroll;
-        height: 700px;
-    }
+    
 }
 
 @media (max-width: 768px) {

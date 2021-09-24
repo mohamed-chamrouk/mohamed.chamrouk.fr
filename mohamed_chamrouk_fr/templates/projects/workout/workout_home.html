@@ -1,8 +1,8 @@
 {% extends 'projects/workout/workout.html' %} {% block content %}
 <div class="wrapper-workout">
     <form action="/projects/workout/" style="grid-area: one" method="POST">
-        <fieldset>
-            <legend style="font-size: 17px">Derniers Entraînements</legend>
+        <fieldset style="height: 444px; overflow-y: scroll;">
+            <legend style="font-size: 17px">Entraînements</legend>
             <table class="table-info table-home" style="table-layout:fixed; width:100%; height: 100%; margin-top:0px; ">
                 <thead style="visibility: collapse;">
                     <tr style="vertical-align:middle">
@@ -10,7 +10,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for session in sessions[-7:] %}
+                    {% for session in sessions|reverse %}
                     <tr>
                         <td style="border-right-width: 0px;">
                             <a class="btn btn-default" href="/projects/workout/{{session['date']|replace('/', '-')}}">Séance du {{session['date']}}</a>
@@ -19,6 +19,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            
         </fieldset>
     </form>
     <div class="button-edits">
@@ -31,7 +32,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <a class="btn btn-default">EDITER LE FICHIER JSON</a>
+                        <a class="btn btn-default" href="/projects/workout/edit_json/">EDITER LE FICHIER JSON</a>
                     </td>
                 </tr>
                 <tr>

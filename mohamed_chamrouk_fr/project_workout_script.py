@@ -97,7 +97,12 @@ with open('templates/projects/workout/temp_workout_data_extract') as file:
 
             dict_lift = {}
             for idx,r in enumerate(re.findall(r' (.*?)-', remaining)):
-                dict_lift[r] = [re.sub("[^0-9]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]
+                if (r,[re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]) in dict_lift.items():
+                    print('non')
+                    dict_lift[str(int(r)+1)] = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]
+                else:
+                    dict_lift[r] = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]
+
             for r, w in dict_lift.items():
                 if r.find('(') != -1:
                     r = [int(x) for x in r.replace('(', '').replace(')', '').split(' ')]
