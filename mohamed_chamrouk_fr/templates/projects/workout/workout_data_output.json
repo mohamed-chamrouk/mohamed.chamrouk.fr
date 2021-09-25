@@ -6371,6 +6371,125 @@
                 }
             ],
             "global_notes": ""
+        },
+        {
+            "date": "25/09/21",
+            "type": "push",
+            "lifts": [
+                {
+                    "exercise": "dev_couche_barre",
+                    "sets": [
+                        {
+                            "weight": 32.5,
+                            "reps": [
+                                6,
+                                6,
+                                6,
+                                5
+                            ]
+                        }
+                    ],
+                    "notes": [
+                        "last set meh, overall good technique but could go lower"
+                    ]
+                },
+                {
+                    "exercise": "dev_incline_haltere",
+                    "sets": [
+                        {
+                            "weight": 32.0,
+                            "reps": [
+                                8,
+                                7
+                            ]
+                        },
+                        {
+                            "weight": 30.0,
+                            "reps": 7
+                        }
+                    ],
+                    "notes": [
+                        "struggle"
+                    ]
+                },
+                {
+                    "exercise": "poulie_vis_a_vis",
+                    "sets": [
+                        {
+                            "weight": 25.3,
+                            "reps": [
+                                12,
+                                12,
+                                10
+                            ]
+                        }
+                    ],
+                    "notes": []
+                },
+                {
+                    "exercise": "dev_arnold",
+                    "sets": [
+                        {
+                            "weight": 18.0,
+                            "reps": [
+                                11,
+                                11,
+                                11
+                            ]
+                        }
+                    ],
+                    "notes": []
+                },
+                {
+                    "exercise": "elevation_barre_front",
+                    "sets": [
+                        {
+                            "weight": 30.0,
+                            "reps": [
+                                8,
+                                8,
+                                8
+                            ]
+                        }
+                    ],
+                    "notes": [
+                        "~ good, superset : "
+                    ]
+                },
+                {
+                    "exercise": "elevation_laterale",
+                    "sets": [
+                        {
+                            "weight": 12.0,
+                            "reps": [
+                                8,
+                                8,
+                                8
+                            ]
+                        }
+                    ],
+                    "notes": [
+                        "pain from yesterday"
+                    ]
+                },
+                {
+                    "exercise": "extension_poulie_haute",
+                    "sets": [
+                        {
+                            "weight": 18.0,
+                            "reps": [
+                                10,
+                                10,
+                                10
+                            ]
+                        }
+                    ],
+                    "notes": [
+                        "nice form and pump with new technique, go back from the cable"
+                    ]
+                }
+            ],
+            "global_notes": ""
         }
     ]
 }
