@@ -1,10 +1,11 @@
+# correspondance dict
 import re
 import json
 
 
 exercise_dict = {
-    "dev_couche_barre": ["dc", "dev couche barre", "dev couche", "dev couché barre"],
-    "dev_couche_haltere": ["dev haltere"],
+    "dev_couche_barre": ["dc", "dev couche barre",  "dev couché barre"],
+    "dev_couche_haltere": ["dev haltere", "dev couche", "dev couché"],
     "dev_arnold": ["dev arnold", "dev-harnold"],
     "dev_incline_haltere": ["devhalt", "dev incline", "dev incliné"],
     "dev_incline_barre": ["di"],
@@ -41,6 +42,8 @@ exercise_dict = {
 }
 
 
+open('templates/projects/workout/workout_data_output.json', 'w').close()
+
 def write_json(json_data, key, filename='templates/projects/workout/workout_data_output.json'):
     with open(filename, 'r+') as wfile:
         json_session = json.load(wfile)
@@ -48,71 +51,78 @@ def write_json(json_data, key, filename='templates/projects/workout/workout_data
         wfile.seek(0)
         json.dump(json_session, wfile, indent=4)
 
-def add_workout_to_json_file(source_file, dest_file) :
-    with open(source_file) as file:
-        Lines = file.readlines()
-        i = -1
-        lifts = []
-        for line in Lines:
-            line = line.lower()
-            
-            if line[:4] in ['push', 'pull', 'legs']:
-                workout_type = line[:4]
-                i += 1
-                date = line[5:line.find(':')].replace(' ', '').replace(':', '').\
-                    replace('\n', '')+'/21'
-                if line.find('(') != -1:
-                    global_notes = line[line.find('(')+1:line.find(')')]
-                else:
-                    global_notes = ""
-                json_data = {"date": date, "type": workout_type, "lifts": [], "global_notes": global_notes}
-            elif line[0].isalpha():
-                for k, v in exercise_dict.items():
-                    if line[:line.find(':')-1] in v:
-                        exercise = k
 
-                remaining = line[line.find(':')+1:].replace('\n','')+' '
-                json_sets = []
-                notes = []
+with open('templates/projects/workout/temp_workout_data_extract') as file:
+    Lines = file.readlines()
+    session = '{"sessions":[]}'
+    with open('templates/projects/workout/workout_data_output.json', 'r+') as wfile:
+        wfile.write(session)
+    i = -1
+    line_number = 0
+    for line in Lines:
+        line_number += 1
+        line = line.lower()
+        
 
-                if remaining.find('(') != -1:
-                    parenthesis = re.findall(r'\((.*?)\)', remaining)
-                    for p in parenthesis:
-                        if any(c.isalpha() for c in p):
-                            notes += [p]
-                            remaining = remaining.replace(f"({p})", '')
-                        elif (p == '~'):
-                            notes += [p]
-                            remaining.replace(f"({p})", "")
-                        else:
-                            reps = remaining[remaining.find('(')+1:remaining.find(')')].split(' ')
-                    if remaining.find('~') != -1:
-                        notes += ['meh']
-                        remaining = remaining.replace('~', '')
+        if line[:4] in ['push', 'pull', 'legs']:
+            workout_type = line[:4]
+            i += 1
+            date = line[5:line.find(':')].replace(' ', '').replace(':', '').\
+                replace('\n', '')+'/21'
+            if line.find('(') != -1:
+                global_notes = line[line.find('(')+1:line.find(')')]
+            else:
+                global_notes = ""
+            json_data = {"date": date, "type": workout_type, "lifts": [], "global_notes": global_notes}
+            write_json(json_data, 'sessions')
+        elif line[0].isalpha():
+            for k, v in exercise_dict.items():
+                if line[:line.find(':')-1] in v:
+                    exercise = k
 
-                dict_lift = {}
-                for idx,r in enumerate(re.findall(r' (.*?)-', remaining)):
-                    if exercise == "dev_incline_haltere":
-                        test = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')]
-                        test_r = re.findall(r' (.*?)-', remaining)
-                        print(f"{exercise} daté du {date} : {remaining} : {test} : {test_r}")
-                    while r in dict_lift.keys():
-                        r = str(int(r) + 1)
-                    dict_lift[r] = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]
-                
-                for r, w in dict_lift.items():
-                    if r.find('(') != -1:
-                        r = [int(x) for x in r.replace('(', '').replace(')', '').split(' ')]
-                        json_sets += [{"weight": float(w), "reps": r}]
-                    elif r.find('x') != -1:
-                        json_sets += [{"weight": float(w), "reps": [int(r[r.find('x')+1:]) for i in range(int(r[:r.find('x')]))]}]
+            remaining = line[line.find(':')+1:].replace('\n','')+' '
+            json_sets = []
+            notes = []
+
+            if remaining.find('(') != -1:
+                parenthesis = re.findall(r'\((.*?)\)', remaining)
+                for p in parenthesis:
+                    if any(c.isalpha() for c in p):
+                        notes += [p]
+                        remaining = remaining.replace(f"({p})", '')
+                    elif (p == '~'):
+                        notes += [p]
+                        remaining.replace(f"({p})", "")
                     else:
-                        json_sets += [{"weight": float(w), "reps": int(r)}]
-                json_data = {"exercise": exercise, "sets": json_sets, "notes": notes}
+                        reps = remaining[remaining.find('(')+1:remaining.find(')')].split(' ')
+                if remaining.find('~') != -1:
+                    notes += ['meh']
+                    remaining = remaining.replace('~', '')
 
-                lifts += [json_data]
-        json_data = {"date": date, "type": workout_type, "lifts": lifts, "global_notes": global_notes}
-        write_json(json_data, 'sessions', dest_file)    
+            dict_lift = {}
+            for idx,r in enumerate(re.findall(r' (.*?)-', remaining)):
+                if exercise == "dev_incline_haltere":
+                    test = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')]
+                    test_r = re.findall(r' (.*?)-', remaining)
+                while r in dict_lift.keys():
+                    r = str(int(r) + 1)
+                dict_lift[r] = [re.sub("[^0-9.]", "", x) for x in re.findall(r'-(.*?) ', remaining+' ')][idx]
+            
+            for r, w in dict_lift.items():
+                if r.find('(') != -1:
+                    r = [int(x) for x in r.replace('(', '').replace(')', '').split(' ')]
+                    json_sets += [{"weight": float(w), "reps": r}]
+                elif r.find('x') != -1:
+                    json_sets += [{"weight": float(w), "reps": [int(r[r.find('x')+1:]) for i in range(int(r[:r.find('x')]))]}]
+                else:
+                    json_sets += [{"weight": float(w), "reps": int(r)}]
+            json_data = {"exercise": exercise, "sets": json_sets, "notes": notes}
+
+            with open('templates/projects/workout/workout_data_output.json', 'r+') as wfile:
+                json_session = json.load(wfile)
+                json_session["sessions"][i]["lifts"].append(json_data)
+                wfile.seek(0)
+                json.dump(json_session, wfile, indent=4)
 
 """def write_json(json_data, key, filename='templates/projects/workout/temp_workout_data_output.json'):
     with open(filename, 'r+') as wfile:
