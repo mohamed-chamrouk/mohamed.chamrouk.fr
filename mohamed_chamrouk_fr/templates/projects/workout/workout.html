@@ -1,0 +1,18 @@
+{% extends 'base_backend.html' %}
+
+{%block head%}
+<link rel="stylesheet" type="text/css" href="/static/css/workout.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/css/dashboard.css">
+<script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+{%endblock%}
+
+
+{% block aside %}
+<h1 style="padding: 0px">
+  <a>
+    <img style=" max-width: 25px; vertical-align: middle; margin: 3px; padding-bottom: 2px" src="/static/media/projects/workout.png">Workout Statistics
+  </a>
+</h1>
+Application permettant d'obtenir des statistiques détaillées, dont notamment des graphs, sur des données d'entraînement.
+{% endblock %}
