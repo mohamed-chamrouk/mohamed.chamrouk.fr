@@ -1,7 +1,7 @@
 {% extends 'projects/workout/workout.html' %} {% block content %}
 <div class="wrapper-workout">
     <form action="/projects/workout/" style="grid-area: one" method="POST">
-        <fieldset style="height: 444px; overflow-y: scroll;">
+        <fieldset style="height: 630px; overflow-y: scroll;">
             <legend style="font-size: 17px">Entraînements</legend>
             <table class="table-info table-home" style="table-layout:fixed; width:100%; height: 100%; margin-top:0px; ">
                 <thead style="visibility: collapse;">
@@ -44,17 +44,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <a class="btn btn-default" href="/projects/workout/edit_json/">EDITER LE FICHIER JSON</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
                         <a class="btn btn-primary" href="/projects/workout/add/">AJOUTER UN ENTRAÎNEMENT</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a class="btn btn-error">COMPARER LES RESULTATS</a>
                     </td>
                 </tr>
             </tbody>
