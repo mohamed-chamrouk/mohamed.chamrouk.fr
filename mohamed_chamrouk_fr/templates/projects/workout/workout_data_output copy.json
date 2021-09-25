@@ -4685,7 +4685,7 @@
                     "exercise": "poulie_vis_a_vis",
                     "sets": [
                         {
-                            "weight": 30.0,
+                            "weight": 302.0,
                             "reps": [
                                 10,
                                 10,
@@ -4694,7 +4694,6 @@
                         }
                     ],
                     "notes": [
-                        "d/2",
                         "~",
                         "meh"
                     ]
@@ -5021,21 +5020,19 @@
                     "exercise": "poulie_vis_a_vis",
                     "sets": [
                         {
-                            "weight": 27.0,
+                            "weight": 272.0,
                             "reps": 15
                         },
                         {
-                            "weight": 34.0,
+                            "weight": 342.0,
                             "reps": 9
                         },
                         {
-                            "weight": 27.0,
+                            "weight": 272.0,
                             "reps": 16
                         }
                     ],
-                    "notes": [
-                        "d/2"
-                    ]
+                    "notes": []
                 },
                 {
                     "exercise": "dev_arnold",

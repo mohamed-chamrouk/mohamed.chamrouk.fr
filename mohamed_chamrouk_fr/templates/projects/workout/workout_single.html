@@ -3,7 +3,7 @@
 {% block content %}
 <div style="padding-top:0px;">
     <a style="font-size: 1.5em; font-weight: 600;">Séance {{workout['type']|upper}} du {{workout['date']}}</a>
-    <p style="font-size: 1em;"> &gt; Commentaires sur la séance : {{workout['global_notes']}}</p>
+    <p style="font-size: 1em;"> {% if workout['global_notes']|length > 0 %} &gt; Commentaires sur la séance : {{workout['global_notes']}}{%endif%}</p> 
 
 
     <!-- Global table for display : -->
@@ -20,13 +20,13 @@
                 <td></td>
                 <td style="text-align: center;"><img src="{{ img_dict[lift['exercise']] }}">
                     <p>{{wrd_dict[lift['exercise']]}}</p><a>Notes : </a>
-                    <p class="notes">{{lift['notes']}}</p>
+                    <p class="notes">{% for note in lift['notes'] %} {% if loop.index0 == lift['notes']|length-1 %} {{ note }} {% else %} {{ note ~ ', ' }} {%endif%} {% endfor %}</p>
                 </td>
             </tr>
             <tr>
                 <td style="text-align: center;" class="pc-table"><img src="{{ img_dict[lift['exercise']] }}">
                     <p>{{wrd_dict[lift['exercise']]}}</p><a>Notes : </a>
-                    <p class="notes">{{lift['notes']}}</p>
+                    <p class="notes">{% for note in lift['notes'] %} {% if loop.index0 == lift['notes']|length-1 %} {{ note }} {% else %} {{ note ~ ', ' }} {%endif%} {% endfor %}</p>
                 </td>
                 <td>
                     <!-- Repeated table for reps : -->

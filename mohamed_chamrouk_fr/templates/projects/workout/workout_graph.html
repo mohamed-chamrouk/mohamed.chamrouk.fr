@@ -2,6 +2,8 @@
 
 {% block content %}
 <div style="margin-bottom: 10px;"><a style="font-size: 1.5em; font-weight: 600; ">Statistiques détaillés pour le {{ wrd_dict[lift] }}</a></div>
+<p style="font-size: 1em;">1RM théorique le plus récent : {{ onerepmax }}kg</p> 
+
 <div class="canva1 to-border" style="width: 100%">
     <div style="text-align: center">Statistiques</div>
     <canvas id="myBarChart"></canvas>
