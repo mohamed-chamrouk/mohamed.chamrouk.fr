@@ -102,7 +102,8 @@ def add_workout_to_json_file(source_file, dest_file) :
                 
                 for r, w in dict_lift.items():
                     if r.find('(') != -1:
-                        r = [int(x) for x in r.replace('(', '').replace(')', '').split(' ')]
+                        print(f"{r}")
+                        r = [int(x) for x in r[r.find('(')+1:r.find(')')].split(' ')]
                         json_sets += [{"weight": float(w), "reps": r}]
                     elif r.find('x') != -1:
                         json_sets += [{"weight": float(w), "reps": [int(r[r.find('x')+1:]) for i in range(int(r[:r.find('x')]))]}]
