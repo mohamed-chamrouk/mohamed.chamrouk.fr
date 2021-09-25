@@ -1,0 +1,19 @@
+{% extends 'projects/workout/workout.html' %}
+
+{% block content %}
+<form method="post">
+    <a>Edition du fichier JSON</a>
+    <div class="grow-wrap">
+        <textarea name="json" id="body-text" onInput="this.parentNode.dataset.replicatedValue = this.value"
+            style="overflow: scroll;">{{ jsonFile }}</textarea>
+    </div>
+    <input class="dropbtn-invert" type="submit" value="Sauvegarder">
+</form>
+<hr>
+<form action="/projects/workout">
+    <div>
+        <input class="dropbtn-invert" type="submit" style="left:20px; background: var(--secondary-color);"
+            value="Annuler">
+    </div>
+</form>
+{% endblock %}

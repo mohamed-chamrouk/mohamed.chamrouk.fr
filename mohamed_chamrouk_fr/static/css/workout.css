@@ -1,0 +1,99 @@
+.no-border-table {
+    border: 0px;
+}
+
+.terminal-alert-error {
+    text-align: left;
+}
+
+.terminal-alert-primary {
+    text-align: left;
+}
+
+.notes {
+    font-size: small;
+    font-weight: 300;
+}
+
+p {
+    font-size: initial;
+}
+
+p a {
+    font-size: initial;
+}
+
+tr {
+    font-size: initial;
+    font-weight: 600;
+}
+
+textarea {
+    height: 700px;
+}
+
+.table-home td,
+.table-home th,
+.table-home td p {
+    vertical-align: middle;
+    margin-bottom: 0px;
+    text-align: center;
+    border: 0px;
+    border-collapse: unset;
+}
+
+.button-edits {
+    grid-area: two;
+    margin-top: 10px;
+    margin-inline-start: 2px;
+    margin-inline-end: 2px;
+}
+
+.terminal-alert {
+    margin-bottom: 0px;
+}
+
+.btn {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    width: 100%;
+}
+
+.overflow-field {
+    overflow-y: scroll;
+    height: 700px;
+}
+
+@media (min-width: 768px) {
+    .mobile-table {
+        visibility: collapse;
+    }
+    .pc-table {
+        visibility: visible;
+    }
+    .mobile-head {
+        width: 20%;
+    }
+    .wrapper-workout {
+        display: grid;
+        grid-gap: 10px;
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas: "one three" "two three";
+    }
+    
+}
+
+@media (max-width: 768px) {
+    .pc-table {
+        visibility: collapse;
+        display: table;
+    }
+    .mobile-table {
+        visibility: visible;
+    }
+    .mobile-head {
+        width: 0%;
+        visibility: collapse;
+        font-size: 0px;
+    }
+}

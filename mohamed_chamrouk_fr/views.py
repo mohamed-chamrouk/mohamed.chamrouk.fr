@@ -19,12 +19,14 @@ from mohamed_chamrouk_fr.auth import auth
 from mohamed_chamrouk_fr.blog import blog
 from mohamed_chamrouk_fr.projects import proj
 from mohamed_chamrouk_fr.project_spotify import spot
+from mohamed_chamrouk_fr.project_workout import wkt
 
 
 app.register_blueprint(auth)
 app.register_blueprint(blog)
 app.register_blueprint(spot)
 app.register_blueprint(proj)
+app.register_blueprint(wkt)
 
 userOS = None
 userIP = None
@@ -37,7 +39,7 @@ sessionID = None
 
 @cache.cached(timeout=3600, key_prefix='all_comments')
 def get_git_log(branch):
-    g = git.Git("/home/mohamed_chamrouk_fr")
+    g = git.Git("~/mohamed_chamrouk_fr")
     sha = g.log('--pretty=format:%h')
     message = g.log('--pretty=format:%B')
     author = g.log('--pretty=format:%aN')
