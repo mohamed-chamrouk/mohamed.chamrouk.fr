@@ -44,7 +44,7 @@ exercise_dict = {
 
 open('templates/projects/workout/workout_data_output.json', 'w').close()
 
-def write_json(json_data, key, filename='templates/projects/workout/workout_data_output.json'):
+"""def write_json(json_data, key, filename='templates/projects/workout/workout_data_output.json'):
     with open(filename, 'r+') as wfile:
         json_session = json.load(wfile)
         json_session[key].append(json_data)
@@ -122,9 +122,9 @@ with open('templates/projects/workout/temp_workout_data_extract') as file:
                 json_session = json.load(wfile)
                 json_session["sessions"][i]["lifts"].append(json_data)
                 wfile.seek(0)
-                json.dump(json_session, wfile, indent=4)
+                json.dump(json_session, wfile, indent=4)"""
 
-"""def write_json(json_data, key, filename='templates/projects/workout/temp_workout_data_output.json'):
+def write_json(json_data, key, filename='templates/projects/workout/workout_data_output.json'):
     with open(filename, 'r+') as wfile:
         json_session = json.load(wfile)
         json_session[key].append(json_data)
@@ -135,7 +135,7 @@ with open('templates/projects/workout/temp_workout_data_extract') as file:
 with open('templates/projects/workout/temp_workout_data') as file:
     Lines = file.readlines()
     session = '{"sessions":[]}'
-    with open('templates/projects/workout/temp_workout_data_output.json', 'r+') as wfile:
+    with open('templates/projects/workout/workout_data_output.json', 'r+') as wfile:
         wfile.write(session)
     i = -1
     for line in Lines:
@@ -144,8 +144,10 @@ with open('templates/projects/workout/temp_workout_data') as file:
 
         if line.find('/') != -1:
             i += 1
-            date = line.replace(' ', '').replace(':', '').replace('\n', '')+'/21'
-            json_data = {"date": date, "lifts": []}
+            date = line.replace(' ', '').replace(':', '').replace('\n', '')
+            if len(date) <= 5:
+                date = date+'/20'
+            json_data = {"date": date, "type": "FULL BODY", "lifts": [], "global_notes": []}
             write_json(json_data, 'sessions')
 
         if line.find('-') != -1 and line[line.find('-')-1].isalpha():
@@ -155,24 +157,23 @@ with open('templates/projects/workout/temp_workout_data') as file:
                 if line[:line.find('-')] in v:
                     exercise = k
 
-            json_data = {"exercise": exercise, "sets": []}
             lift = {}
             weight = float(newline[:newline.find("kg")])
             remaining = newline[newline.find(":")+1:].replace('\n', '')
 
             if not any(c.isalpha() for c in remaining):  #TODO A transformer en boucle while
                 reps = [float(x) for x in remaining.replace(' ', '').split('-')]
-                json_sets = {"weight": weight, "reps": reps}
+                json_sets = [{"weight": weight, "reps": reps}]
             else:
                 reps = [float(x) for x in remaining[:remaining.find('kg')].rsplit(' ', 1)[0].replace(' ', '').split('-')]
                 weight_bis = float(remaining[:remaining.find('kg')].rsplit(' ', 1)[1])
                 reps_bis = [float(x) for x in remaining[remaining.find('kg')+2:].replace(' ', '').replace(':','').split('-')]
                 json_sets = {"weight": weight, "reps": reps}, {"weight": weight_bis, "reps": reps_bis}
 
-            json_data = {"exercise": exercise, "sets": [json_sets]}
+            json_data = {"exercise": exercise, "sets": json_sets, "notes": []}
 
-            with open('templates/projects/workout/temp_workout_data_output.json', 'r+') as wfile:
+            with open('templates/projects/workout/workout_data_output.json', 'r+') as wfile:
                 json_session = json.load(wfile)
                 json_session["sessions"][i]["lifts"].append(json_data)
                 wfile.seek(0)
-                json.dump(json_session, wfile, indent=4)"""
+                json.dump(json_session, wfile, indent=4)

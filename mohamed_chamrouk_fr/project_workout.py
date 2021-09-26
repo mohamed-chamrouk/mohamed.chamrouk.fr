@@ -189,7 +189,7 @@ def workout_graph(lift):
             if exercise['exercise'] == lift:
                 weight = 0
                 reps = 0
-                for idx,set in enumerate(exercise['sets']):
+                for set in exercise['sets']:
                     if set['weight'] > weight:
                         weight = set['weight']
                         reps = max(set['reps']) if type(set['reps']) == list else set['reps']
