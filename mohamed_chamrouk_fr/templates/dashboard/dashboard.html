@@ -47,7 +47,7 @@ Recensement des dernières activitées monitorées sur le site.
           </tr>
         </thead>
         <tbody>
-          {% for session in get_all_sessions() %}
+          {% for session in get_all_sessions()|reverse %}
           <tr>
             {% for k,v in session.items() %}
             {% if k not in ('session', 'continent') %}

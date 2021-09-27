@@ -1,0 +1,23 @@
+.error-number {
+    color: var(--primary-color);
+    font-weight: 600;
+    font-size: 200px;
+    padding-top: 200px;
+    margin-bottom: 150px;
+}
+
+.error-name {
+    font-weight: 400;
+    font-size: 30pt;
+}
+
+.home-container {
+    text-align: center; 
+    padding-top: 30px;
+}
+
+.home-text{
+    font-size: 30px; 
+    background-color: var(--primary-color); 
+    color:var(--background-color);
+}

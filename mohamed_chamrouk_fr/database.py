@@ -68,7 +68,7 @@ def create_session(c, data):
 
 
 def select_all_sessions(c):
-    sql = "SELECT * FROM public.sessions"
+    sql = "SELECT * FROM public.sessions t ORDER BY t.id"
     with c.connect() as connection:
         rows = connection.execute(sql).fetchall()
         return rows
