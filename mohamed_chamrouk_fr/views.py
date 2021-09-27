@@ -36,6 +36,25 @@ userCountry = None
 userContinent = None
 sessionID = None
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('errors/error.html', error_number=404, error_name='page not found'), 404
+
+@app.errorhandler(403)
+def page_not_found(e):
+    return render_template('errors/error.html', error_number=403, error_name='forbidden'), 403
+
+@app.errorhandler(401)
+def page_not_found(e):
+    return render_template('errors/error.html', error_number=401, error_name='unauthorized'), 403
+
+@app.errorhandler(410)
+def page_not_found(e):
+    return render_template('errors/error.html', error_number=410, error_name='gone'), 410
+
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template('errors/error.html', error_number=500, error_name='Internal Server Error'), 500
 
 @cache.cached(timeout=3600, key_prefix='all_comments')
 def get_git_log(branch):
@@ -114,7 +133,7 @@ def get_all_sessions():
             'session': row['session'],
             'time': row['created_at']
         })
-    return data[::-1]
+    return data
 
 
 def get_num_sessions():
@@ -179,12 +198,14 @@ def home():
     if page:
         if int(page) > total_page:
             page = total_page
+        elif int(page) < 1:
+            page = 1
         else:
             page = int(page)
         last_post = 5+5*(page-1) if len(posts) >= 5+5*(page-1) else len(posts)
     else:
         page = 1
-        last_post = len(posts)-1 if total_page > 1 else len(posts)
+        last_post = 5 if total_page > 1 else len(posts)
 
     git_log = get_git_log('main')
     return render_template('blog/blog.html', posts=posts[(page-1)*5:last_post],
